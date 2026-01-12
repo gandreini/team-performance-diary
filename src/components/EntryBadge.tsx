@@ -12,13 +12,13 @@ export function EntryBadge({ entryType, feedbackType }: EntryBadgeProps) {
     switch (entryType) {
       case 'feedback':
         if (feedbackType === 'positive') {
-          return { label: 'Positive', color: 'bg-[#F5F3FF] text-[#7C3AED] border border-[#DDD6FE]' };
+          return { label: 'Positive', color: 'bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]' };
         }
-        return { label: 'Constructive', color: 'bg-[#FFFBEB] text-[#D97706] border border-[#FDE68A]' };
+        return { label: 'Constructive', color: 'bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA]' };
       case 'accomplishment':
         return { label: 'Accomplishment', color: 'bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]' };
       case 'kudos':
-        return { label: 'Kudos', color: 'bg-[#FFFBEB] text-[#D97706] border border-[#FDE68A]' };
+        return { label: 'Kudos', color: 'bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]' };
       case 'notes':
         return { label: 'Note', color: 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]' };
       case 'career_conversation':

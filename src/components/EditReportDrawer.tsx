@@ -152,44 +152,46 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
     <>
       <Drawer isOpen={isOpen} onClose={handleClose} title="Edit Report" width="xl">
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
-          <div className="space-y-4 flex-1">
-            <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
-                First name
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors ${
-                  errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
-                }`}
-              />
-              {errors.firstName && (
-                <p className="mt-1 text-xs text-[#DC2626]">{errors.firstName}</p>
-              )}
+          <div className="flex flex-col flex-1 min-h-0">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+                  First name
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors ${
+                    errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
+                  }`}
+                />
+                {errors.firstName && (
+                  <p className="mt-1 text-xs text-[#DC2626]">{errors.firstName}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+                  Last name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors ${
+                    errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
+                  }`}
+                />
+                {errors.lastName && (
+                  <p className="mt-1 text-xs text-[#DC2626]">{errors.lastName}</p>
+                )}
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
-                Last name
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors ${
-                  errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
-                }`}
-              />
-              {errors.lastName && (
-                <p className="mt-1 text-xs text-[#DC2626]">{errors.lastName}</p>
-              )}
-            </div>
-
-            <div className="flex-1 flex flex-col min-h-0">
+            <div className="flex-1 flex flex-col min-h-0 mt-4">
               <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
                 Development goals (optional)
               </label>

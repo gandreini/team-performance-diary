@@ -9,6 +9,7 @@ import { EntryCard } from '@/components/EntryCard';
 import { Dropdown } from '@/components/Dropdown';
 import { AddEntryDrawer } from '@/components/AddEntryDrawer';
 import { EditReportDrawer } from '@/components/EditReportDrawer';
+import { ScrollArea } from '@/components/ScrollArea';
 import { useToast } from '@/components/Toast';
 import type { Report, Entry, Cycle, EntryType } from '@/db';
 
@@ -98,7 +99,7 @@ export default function ReportDiaryPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div>
+    <div className="max-w-[1600px] mx-auto">
       {/* Breadcrumb */}
       <nav className="mb-4">
         <ol className="flex items-center text-xs text-[#71717A]">
@@ -114,111 +115,76 @@ export default function ReportDiaryPage({ params }: { params: Promise<{ id: stri
         </ol>
       </nav>
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h1 className="text-lg font-semibold text-[#18181B] tracking-tight">
-          {report.firstName} {report.lastName}
-        </h1>
-        <Button variant="secondary" onClick={() => setIsEditReportDrawerOpen(true)}>
-          Edit Report
-        </Button>
-      </div>
+      {/* Two-column layout for wide screens */}
+      <div className="xl:flex xl:gap-8">
+        {/* Left Column - Sticky on wide screens */}
+        <div className="xl:w-[500px] xl:flex-shrink-0">
+          <div className="xl:sticky xl:top-4">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <h1 className="text-lg font-semibold text-[#18181B] tracking-tight">
+                {report.firstName} {report.lastName}
+              </h1>
+              <Button variant="secondary" onClick={() => setIsEditReportDrawerOpen(true)}>
+                Edit Report
+              </Button>
+            </div>
 
-      {/* Development Goals Section */}
-      <div className="bg-white rounded-md border border-[#E4E4E7] mb-6">
-        <button
-          type="button"
-          onClick={() => setIsGoalsExpanded(!isGoalsExpanded)}
-          className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-[#FAFAFA] transition-colors rounded-md"
-        >
-          <h2 className="text-sm font-semibold text-[#18181B] tracking-tight">Development Goals</h2>
-          <svg
-            className={`w-4 h-4 text-[#71717A] transition-transform duration-200 ${isGoalsExpanded ? 'rotate-180' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div
-          className={`overflow-hidden transition-all duration-200 ease-out ${
-            isGoalsExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="px-4 pb-4">
-            {report.developmentGoals ? (
-              <div className="prose prose-sm max-w-none">
-                <ReactMarkdown>{report.developmentGoals}</ReactMarkdown>
-              </div>
-            ) : (
-              <p className="text-sm text-[#71717A] italic">
-                No development goals set. Use Edit Report to add.
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Entries Section */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <h2 className="text-sm font-semibold text-[#18181B] tracking-tight">Entries</h2>
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as EntryType | 'all')}
-              className="px-3 py-1.5 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[36px]"
-            >
-              {ENTRY_TYPE_OPTIONS.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <span className="text-xs text-[#71717A]">
-              {filteredEntries.length} {filteredEntries.length === 1 ? 'entry' : 'entries'}
-            </span>
-          </div>
-          <Dropdown
-            trigger={
-              <Button>
-                Add Entry
-                <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {/* Development Goals Section */}
+            <div className="bg-white rounded-md border border-[#E4E4E7] mb-6 xl:mb-0">
+              <button
+                type="button"
+                onClick={() => setIsGoalsExpanded(!isGoalsExpanded)}
+                className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-[#FAFAFA] transition-colors rounded-md"
+              >
+                <h2 className="text-sm font-semibold text-[#18181B] tracking-tight">Development Goals</h2>
+                <svg
+                  className={`w-4 h-4 text-[#71717A] transition-transform duration-200 ${isGoalsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
-              </Button>
-            }
-            options={ENTRY_TYPES}
-            onSelect={(value) => {
-              setSelectedEntryType(value as EntryType);
-              setIsAddEntryDrawerOpen(true);
-            }}
-          />
+              </button>
+              {isGoalsExpanded && (
+                <ScrollArea maxHeight="calc(100vh - 220px)" className="px-4 pb-4">
+                  {report.developmentGoals ? (
+                    <div className="prose prose-sm max-w-none">
+                      <ReactMarkdown>{report.developmentGoals}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-[#71717A] italic">
+                      No development goals set. Use Edit Report to add.
+                    </p>
+                  )}
+                </ScrollArea>
+              )}
+            </div>
+          </div>
         </div>
 
-        {filteredEntries.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-md border border-[#E4E4E7]">
-            <svg
-              className="mx-auto h-10 w-10 text-[#D4D4D8]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            <h3 className="mt-4 text-sm font-medium text-[#18181B]">
-              {filter === 'all' ? 'No entries yet' : `No ${ENTRY_TYPE_OPTIONS.find(o => o.value === filter)?.label.toLowerCase()} entries yet`}
-            </h3>
-            <p className="mt-1 text-sm text-[#71717A]">
-              Start tracking by adding your first entry.
-            </p>
-            <div className="mt-6">
+        {/* Right Column - Entries */}
+        <div className="xl:flex-1 xl:min-w-0">
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h2 className="text-sm font-semibold text-[#18181B] tracking-tight">Entries</h2>
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value as EntryType | 'all')}
+                  className="px-3 py-1.5 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[36px]"
+                >
+                  {ENTRY_TYPE_OPTIONS.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-xs text-[#71717A]">
+                  {filteredEntries.length} {filteredEntries.length === 1 ? 'entry' : 'entries'}
+                </span>
+              </div>
               <Dropdown
                 trigger={
                   <Button>
@@ -235,23 +201,64 @@ export default function ReportDiaryPage({ params }: { params: Promise<{ id: stri
                 }}
               />
             </div>
+
+            {filteredEntries.length === 0 ? (
+              <div className="text-center py-12 bg-white rounded-md border border-[#E4E4E7]">
+                <svg
+                  className="mx-auto h-10 w-10 text-[#D4D4D8]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <h3 className="mt-4 text-sm font-medium text-[#18181B]">
+                  {filter === 'all' ? 'No entries yet' : `No ${ENTRY_TYPE_OPTIONS.find(o => o.value === filter)?.label.toLowerCase()} entries yet`}
+                </h3>
+                <p className="mt-1 text-sm text-[#71717A]">
+                  Start tracking by adding your first entry.
+                </p>
+                <div className="mt-6">
+                  <Dropdown
+                    trigger={
+                      <Button>
+                        Add Entry
+                        <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </Button>
+                    }
+                    options={ENTRY_TYPES}
+                    onSelect={(value) => {
+                      setSelectedEntryType(value as EntryType);
+                      setIsAddEntryDrawerOpen(true);
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {filteredEntries.map((entry) => (
+                  <EntryCard
+                    key={entry.id}
+                    entry={entry}
+                    onEdit={() => {
+                      setEditingEntry(entry);
+                      setSelectedEntryType(entry.entryType);
+                      setIsAddEntryDrawerOpen(true);
+                    }}
+                    onDelete={fetchData}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="space-y-3">
-            {filteredEntries.map((entry) => (
-              <EntryCard
-                key={entry.id}
-                entry={entry}
-                onEdit={() => {
-                  setEditingEntry(entry);
-                  setSelectedEntryType(entry.entryType);
-                  setIsAddEntryDrawerOpen(true);
-                }}
-                onDelete={fetchData}
-              />
-            ))}
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Drawer for adding/editing entries */}
