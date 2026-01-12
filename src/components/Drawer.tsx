@@ -93,7 +93,7 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
+        <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col min-h-0">
           {children}
         </div>
       </div>
