@@ -189,7 +189,7 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
               )}
             </div>
 
-            <div>
+            <div className="flex-1 flex flex-col min-h-0">
               <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
                 Development goals (optional)
               </label>
@@ -197,8 +197,7 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
                 id="developmentGoals"
                 value={developmentGoals}
                 onChange={(e) => setDevelopmentGoals(e.target.value)}
-                rows={6}
-                className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors resize-none ${
+                className={`w-full flex-1 min-h-[150px] px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors resize-none ${
                   errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
                 }`}
                 placeholder="Markdown supported"
