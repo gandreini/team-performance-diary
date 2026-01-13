@@ -45,14 +45,15 @@
   --color-primary-100: var(--primary-100);
   --color-primary-600: var(--primary-600);
   --color-primary-700: var(--primary-700);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Satoshi", system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
+  --font-satoshi: "Satoshi", system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: "Satoshi", system-ui, sans-serif;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
