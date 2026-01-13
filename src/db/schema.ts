@@ -42,11 +42,13 @@ export const entries = sqliteTable('entries', {
 
   // Feedback-specific fields
   feedbackType: text('feedback_type', { enum: ['positive', 'constructive'] }),
+  feedbackGiven: integer('feedback_given', { mode: 'boolean' }).default(false),
   situation: text('situation'),
   behavior: text('behavior'),
   impact: text('impact'),
 
   // Shared fields
+  title: text('title'),
   notes: text('notes'),
   link: text('link'),
   providerName: text('provider_name'),

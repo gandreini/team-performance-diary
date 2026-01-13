@@ -56,7 +56,11 @@ export async function PUT(
 
     switch (existingEntry.entryType) {
       case 'feedback': {
-        const { feedback_type, situation, behavior, impact, notes } = body;
+        const { feedback_type, feedback_given, situation, behavior, impact, notes } = body;
+
+        if (feedback_given !== undefined) {
+          updateData.feedbackGiven = Boolean(feedback_given);
+        }
 
         if (feedback_type !== undefined) {
           if (!['positive', 'constructive'].includes(feedback_type)) {
@@ -128,7 +132,37 @@ export async function PUT(
         break;
       }
 
-      case 'accomplishment':
+      case 'accomplishment': {
+        const { title, notes } = body;
+
+        if (title !== undefined) {
+          if (title && typeof title === 'string' && title.length > 200) {
+            return NextResponse.json(
+              { error: 'Title must be at most 200 characters' },
+              { status: 400 }
+            );
+          }
+          updateData.title = title?.trim() || null;
+        }
+
+        if (notes !== undefined) {
+          if (typeof notes !== 'string' || notes.trim().length === 0) {
+            return NextResponse.json(
+              { error: 'Content is required' },
+              { status: 400 }
+            );
+          }
+          if (notes.length > 5000) {
+            return NextResponse.json(
+              { error: 'Content must be at most 5000 characters' },
+              { status: 400 }
+            );
+          }
+          updateData.notes = notes.trim();
+        }
+        break;
+      }
+
       case 'notes':
       case 'career_conversation': {
         const { notes } = body;

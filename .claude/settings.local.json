@@ -6,7 +6,9 @@
       "Bash(npm install:*)",
       "Bash(npm run db:push:*)",
       "Bash(npm view:*)",
-      "Bash(timeout 10 npm run dev)"
+      "Bash(timeout 10 npm run dev)",
+      "Bash(sqlite3:*)",
+      "Bash(npm run test:run:*)"
     ]
   }
 }

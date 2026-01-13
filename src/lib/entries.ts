@@ -45,6 +45,13 @@ export interface CreateSimpleEntryData {
   notes: string;
 }
 
+export interface CreateAccomplishmentData {
+  reportId: string;
+  cycleId: string;
+  title?: string | null;
+  notes: string;
+}
+
 export interface CreateKudosData {
   reportId: string;
   cycleId: string;
@@ -79,13 +86,14 @@ export async function createFeedbackEntry(data: CreateFeedbackData): Promise<Ent
   return newEntry as Entry;
 }
 
-export async function createAccomplishmentEntry(data: CreateSimpleEntryData): Promise<Entry> {
+export async function createAccomplishmentEntry(data: CreateAccomplishmentData): Promise<Entry> {
   const now = new Date().toISOString();
   const newEntry: NewEntry = {
     id: uuidv4(),
     reportId: data.reportId,
     cycleId: data.cycleId,
     entryType: 'accomplishment',
+    title: data.title || null,
     notes: data.notes,
     createdAt: now,
     updatedAt: now,

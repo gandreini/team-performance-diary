@@ -47,6 +47,7 @@ export function AddEntryDrawer({
   const [notes, setNotes] = useState('');
   const [link, setLink] = useState('');
   const [providerName, setProviderName] = useState('');
+  const [title, setTitle] = useState('');
 
   const isEditing = !!editEntry;
 
@@ -60,6 +61,7 @@ export function AddEntryDrawer({
         setNotes(editEntry.notes || '');
         setLink(editEntry.link || '');
         setProviderName(editEntry.providerName || '');
+        setTitle(editEntry.title || '');
         setHasChanges(false);
       } else {
         resetForm();
@@ -75,6 +77,7 @@ export function AddEntryDrawer({
     setNotes('');
     setLink('');
     setProviderName('');
+    setTitle('');
     setHasChanges(false);
   };
 
@@ -116,6 +119,11 @@ export function AddEntryDrawer({
           providerName.trim().length >= 1 && providerName.trim().length <= 100 &&
           notes.trim().length >= 1 && notes.length <= 5000
         );
+      case 'accomplishment':
+        return (
+          notes.trim().length >= 1 && notes.length <= 5000 &&
+          title.length <= 200
+        );
       default:
         return notes.trim().length >= 1 && notes.length <= 5000;
     }
@@ -150,6 +158,10 @@ export function AddEntryDrawer({
           break;
         case 'third_party_feedback':
           body.provider_name = providerName.trim();
+          body.notes = notes.trim();
+          break;
+        case 'accomplishment':
+          body.title = title.trim() || null;
           body.notes = notes.trim();
           break;
         default:
@@ -187,8 +199,8 @@ export function AddEntryDrawer({
   const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#A1A1AA] resize-none";
 
   const renderFeedbackForm = () => (
-    <>
-      <div>
+    <div className="flex flex-col h-full gap-5">
+      <div className="flex-shrink-0">
         <label className="block text-sm font-medium text-[#3F3F46] mb-2">Feedback Type</label>
         <div className="flex gap-4">
           <label className="flex items-center cursor-pointer">
@@ -216,7 +228,7 @@ export function AddEntryDrawer({
         </div>
       </div>
 
-      <div>
+      <div className="flex-shrink-0">
         <label htmlFor="situation" className="block text-sm font-medium text-[#3F3F46] mb-1">
           Situation
         </label>
@@ -235,7 +247,7 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div>
+      <div className="flex-shrink-0">
         <label htmlFor="behavior" className="block text-sm font-medium text-[#3F3F46] mb-1">
           Behavior
         </label>
@@ -254,7 +266,7 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div>
+      <div className="flex-shrink-0">
         <label htmlFor="impact" className="block text-sm font-medium text-[#3F3F46] mb-1">
           Impact
         </label>
@@ -273,23 +285,23 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+      <div className="flex-1 flex flex-col min-h-0">
+        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
           Additional notes (optional)
         </label>
         <MarkdownEditor
           value={notes}
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
-          rows={6}
           maxLength={2000}
+          fillHeight
         />
       </div>
-    </>
+    </div>
   );
 
   const renderKudosForm = () => (
-    <>
-      <div>
+    <div className="flex flex-col h-full gap-5">
+      <div className="flex-shrink-0">
         <label htmlFor="link" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
           Link to kudos (optional)
         </label>
@@ -306,23 +318,23 @@ export function AddEntryDrawer({
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+      <div className="flex-1 flex flex-col min-h-0">
+        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
           Describe the kudos
         </label>
         <MarkdownEditor
           value={notes}
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
-          rows={12}
           maxLength={5000}
+          fillHeight
         />
       </div>
-    </>
+    </div>
   );
 
   const renderThirdPartyFeedbackForm = () => (
-    <>
-      <div>
+    <div className="flex flex-col h-full gap-5">
+      <div className="flex-shrink-0">
         <label htmlFor="providerName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
           Who provided this feedback?
         </label>
@@ -338,31 +350,64 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+      <div className="flex-1 flex flex-col min-h-0">
+        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
           Feedback content
         </label>
         <MarkdownEditor
           value={notes}
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
-          rows={12}
           maxLength={5000}
+          fillHeight
         />
       </div>
-    </>
+    </div>
   );
 
   const renderSimpleForm = (label: string) => (
-    <div>
-      <label className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+    <div className="flex flex-col h-full">
+      <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
         {label}
       </label>
       <MarkdownEditor
         value={notes}
         onChange={(value) => { setNotes(value); setHasChanges(true); }}
-        rows={14}
         maxLength={5000}
+        fillHeight
       />
+    </div>
+  );
+
+  const renderAccomplishmentForm = () => (
+    <div className="flex flex-col h-full gap-5">
+      <div className="flex-shrink-0">
+        <label htmlFor="title" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+          Title (optional)
+        </label>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(e) => { setTitle(e.target.value); setHasChanges(true); }}
+          className={inputClassName}
+          placeholder="Brief title for this accomplishment"
+        />
+        <p className={`text-xs mt-1 text-right ${title.length > 200 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+          {title.length} / 200
+        </p>
+      </div>
+
+      <div className="flex-1 flex flex-col min-h-0">
+        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
+          What did they accomplish?
+        </label>
+        <MarkdownEditor
+          value={notes}
+          onChange={(value) => { setNotes(value); setHasChanges(true); }}
+          maxLength={5000}
+          fillHeight
+        />
+      </div>
     </div>
   );
 
@@ -375,7 +420,7 @@ export function AddEntryDrawer({
       case 'third_party_feedback':
         return renderThirdPartyFeedbackForm();
       case 'accomplishment':
-        return renderSimpleForm('What did they accomplish?');
+        return renderAccomplishmentForm();
       case 'notes':
         return renderSimpleForm('Note');
       case 'career_conversation':
@@ -388,11 +433,11 @@ export function AddEntryDrawer({
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} title={getTitle()} width="xl">
       <form onSubmit={handleSubmit} className="flex flex-col h-full">
-        <div className="flex-1 space-y-5">
+        <div className="flex-1 min-h-0">
           {renderForm()}
         </div>
 
-        <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F4F4F5]">
+        <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F4F4F5] flex-shrink-0">
           <Button type="button" variant="secondary" onClick={handleClose}>
             Cancel
           </Button>

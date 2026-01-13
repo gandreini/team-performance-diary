@@ -56,10 +56,10 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
   if (!shouldRender) return null;
 
   const widthClasses = {
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
-    '2xl': 'max-w-2xl',
+    md: 'max-w-lg',
+    lg: 'max-w-xl',
+    xl: 'max-w-2xl',
+    '2xl': 'max-w-3xl',
   };
 
   return (

@@ -10,6 +10,8 @@ interface MarkdownEditorProps {
   rows?: number;
   maxLength?: number;
   id?: string;
+  className?: string;
+  fillHeight?: boolean;
 }
 
 export function MarkdownEditor({
@@ -19,13 +21,15 @@ export function MarkdownEditor({
   rows = 10,
   maxLength,
   id,
+  className = '',
+  fillHeight = false,
 }: MarkdownEditorProps) {
   const [activeTab, setActiveTab] = useState<'write' | 'preview'>('write');
 
   const isOverLimit = maxLength ? value.length > maxLength : false;
 
   return (
-    <div className="border border-[#E4E4E7] rounded-md overflow-hidden">
+    <div className={`border border-[#E4E4E7] rounded-md overflow-hidden ${fillHeight ? 'flex flex-col h-full' : ''} ${className}`}>
       {/* Tabs */}
       <div className="flex border-b border-[#E4E4E7] bg-[#FAFAFA]">
         <button
@@ -58,14 +62,14 @@ export function MarkdownEditor({
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          rows={rows}
-          className="w-full px-3 py-2 text-sm focus:outline-none resize-none placeholder:text-[#A1A1AA]"
+          rows={fillHeight ? undefined : rows}
+          className={`w-full px-3 py-2 text-sm focus:outline-none resize-none placeholder:text-[#A1A1AA] ${fillHeight ? 'flex-1 min-h-0' : ''}`}
           placeholder={placeholder}
         />
       ) : (
         <div
-          className="px-3 py-2 overflow-y-auto bg-white"
-          style={{ minHeight: `${rows * 1.5 + 1}rem` }}
+          className={`px-3 py-2 overflow-y-auto bg-white ${fillHeight ? 'flex-1 min-h-0' : ''}`}
+          style={fillHeight ? undefined : { minHeight: `${rows * 1.5 + 1}rem` }}
         >
           {value.trim() ? (
             <div className="prose prose-sm max-w-none">
@@ -79,7 +83,7 @@ export function MarkdownEditor({
 
       {/* Character count */}
       {maxLength && (
-        <div className="px-3 py-1.5 border-t border-[#F4F4F5] bg-[#FAFAFA]">
+        <div className="px-3 py-1.5 border-t border-[#F4F4F5] bg-[#FAFAFA] flex-shrink-0">
           <p className={`text-xs text-right ${isOverLimit ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
             {value.length} / {maxLength}
           </p>

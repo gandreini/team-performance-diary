@@ -142,7 +142,7 @@ export async function POST(request: Request) {
       }
 
       case 'accomplishment': {
-        const { notes } = body;
+        const { title, notes } = body;
 
         if (!notes || typeof notes !== 'string' || notes.trim().length === 0) {
           return NextResponse.json(
@@ -156,10 +156,17 @@ export async function POST(request: Request) {
             { status: 400 }
           );
         }
+        if (title && typeof title === 'string' && title.length > 200) {
+          return NextResponse.json(
+            { error: 'Title must be at most 200 characters' },
+            { status: 400 }
+          );
+        }
 
         entry = await createAccomplishmentEntry({
           reportId: report_id,
           cycleId: effectiveCycleId,
+          title: title?.trim() || null,
           notes: notes.trim(),
         });
         break;

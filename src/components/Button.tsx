@@ -21,10 +21,10 @@ export function Button({
   const baseStyles = 'inline-flex items-center justify-center font-medium rounded-md transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed tracking-tight';
 
   const variantStyles = {
-    primary: 'bg-[#7C3AED] text-white hover:bg-[#6D28D9] focus-visible:ring-[#8B5CF6] shadow-sm',
-    secondary: 'bg-white text-[#3F3F46] border border-[#E4E4E7] hover:bg-[#FAFAFA] hover:border-[#D4D4D8] focus-visible:ring-[#8B5CF6]',
+    primary: 'bg-[#18181B] text-white hover:bg-[#27272A] focus-visible:ring-[#3F3F46] shadow-sm',
+    secondary: 'bg-white text-[#3F3F46] border border-[#E4E4E7] hover:bg-[#FAFAFA] hover:border-[#D4D4D8] focus-visible:ring-[#3F3F46]',
     danger: 'bg-[#DC2626] text-white hover:bg-[#B91C1C] focus-visible:ring-[#DC2626]',
-    ghost: 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F4F4F5] focus-visible:ring-[#8B5CF6]',
+    ghost: 'text-[#52525B] hover:text-[#18181B] hover:bg-[#F4F4F5] focus-visible:ring-[#3F3F46]',
   };
 
   const sizeStyles = {

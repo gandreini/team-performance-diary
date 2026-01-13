@@ -57,3 +57,43 @@ BASIC_AUTH_PASS=password                   # Basic auth password
 - Database operations in `src/lib/` files
 - Components use client-side rendering where needed
 - Markdown support via react-markdown
+
+## Testing
+- **Framework:** Vitest with mocked database operations
+- **Scope:** Library functions and API routes (107 tests)
+- Tests are excluded from TypeScript build via `tsconfig.json`
+
+### Test Commands
+- `npm test` - Run tests in watch mode
+- `npm run test:run` - Run tests once
+- `npm run test:coverage` - Run tests with coverage report
+
+### Test Structure
+```
+src/
+├── test/
+│   └── setup.ts           # Test setup with db mocks
+├── lib/
+│   └── __tests__/
+│       ├── entries.test.ts
+│       ├── cycles.test.ts
+│       └── reports.test.ts
+└── app/api/
+    ├── entries/__tests__/route.test.ts
+    ├── cycles/__tests__/route.test.ts
+    └── reports/__tests__/route.test.ts
+```
+
+## UI Components
+- **ScrollArea** - Custom scrollbar component using CSS (`.custom-scrollbar` class)
+- **EntryBadge** - Color-coded badges (green: Positive Feedback/Kudos, red: Constructive Feedback)
+- **MarkdownEditor** - Supports `fillHeight` prop for dynamic vertical sizing
+- **ReportCard** - Rectangular cards with user icons in responsive grid layout
+
+## Responsive Layout
+- Report detail page uses two-column layout on wide screens (xl: 1280px+)
+- Left column (500px): Sticky sidebar with name and development goals
+- Right column: Scrollable entries list
+- Single column on smaller screens
+- Max page width: 1800px
+- Home page report cards: Responsive grid (2-6 columns based on screen size)

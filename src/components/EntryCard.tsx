@@ -20,6 +20,8 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [isOptimisticallyDeleted, setIsOptimisticallyDeleted] = useState(false);
+  const [feedbackGiven, setFeedbackGiven] = useState(entry.feedbackGiven ?? false);
+  const [updatingFeedbackGiven, setUpdatingFeedbackGiven] = useState(false);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -59,6 +61,29 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
       // Restore the card on failure
       setIsOptimisticallyDeleted(false);
       showToast('Failed to delete entry. Please try again.', 'error');
+    }
+  };
+
+  const handleFeedbackGivenChange = async (checked: boolean) => {
+    const previousValue = feedbackGiven;
+    setFeedbackGiven(checked);
+    setUpdatingFeedbackGiven(true);
+
+    try {
+      const response = await fetch(`/api/entries/${entry.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ feedback_given: checked }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update');
+      }
+    } catch (error) {
+      setFeedbackGiven(previousValue);
+      showToast('Failed to update. Please try again.', 'error');
+    } finally {
+      setUpdatingFeedbackGiven(false);
     }
   };
 
@@ -123,6 +148,18 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
           </div>
         );
 
+      case 'accomplishment':
+        return (
+          <div className="space-y-2">
+            {entry.title && (
+              <h3 className="text-sm font-medium text-[#18181B]">{entry.title}</h3>
+            )}
+            <div className="prose prose-sm max-w-none text-[#3F3F46]">
+              <ReactMarkdown>{entry.notes || ''}</ReactMarkdown>
+            </div>
+          </div>
+        );
+
       default:
         return (
           <div className="prose prose-sm max-w-none text-[#3F3F46]">
@@ -146,6 +183,26 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
             <span className="text-xs text-[#71717A]">
               {formatDate(entry.createdAt)} at {formatTime(entry.createdAt)}
             </span>
+            {entry.entryType === 'feedback' && !readOnly && (
+              <label className="flex items-center gap-1.5 ml-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={feedbackGiven}
+                  onChange={(e) => handleFeedbackGivenChange(e.target.checked)}
+                  disabled={updatingFeedbackGiven}
+                  className="w-4 h-4 rounded border-[#D4D4D8] text-[#16A34A] focus:ring-[#BBF7D0] focus:ring-2 cursor-pointer disabled:opacity-50"
+                />
+                <span className="text-xs text-[#71717A] flex items-center gap-1">
+                  Given
+                  {updatingFeedbackGiven && (
+                    <svg className="w-3 h-3 animate-spin text-[#A1A1AA]" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                  )}
+                </span>
+              </label>
+            )}
           </div>
           {!readOnly && (
             <div className="flex gap-0.5">

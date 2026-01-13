@@ -57,6 +57,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000)
 
+## Testing
+
+```bash
+npm test              # Run tests in watch mode
+npm run test:run      # Run tests once
+npm run test:coverage # Run with coverage report
+```
+
 ## Deployment
 
 Deployed on Vercel with Turso database.

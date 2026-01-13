@@ -15,7 +15,7 @@ export function Header() {
 
   return (
     <header className="bg-white border-b border-[#F4F4F5]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           <Link href="/" className="text-base font-semibold text-[#18181B] tracking-tight truncate mr-4">
             <span className="hidden sm:inline">Team Performance Diary</span>
