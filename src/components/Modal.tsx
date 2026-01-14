@@ -41,7 +41,7 @@ export function Modal({ isOpen, onClose, title, children, role = 'dialog' }: Mod
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-y-auto"
+      className="fixed inset-0 z-[9999] overflow-y-auto"
       aria-labelledby="modal-title"
       role={role}
       aria-modal="true"

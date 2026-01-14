@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { useState, useEffect } from 'react';
+import { MarkdownContent } from './MarkdownContent';
 import { EntryBadge } from './EntryBadge';
 import { Button } from './Button';
 import { Modal } from './Modal';
 import { useToast } from './Toast';
-import type { Entry } from '@/db';
+import type { Entry, DevelopmentGoal } from '@/db';
 
 interface EntryCardProps {
   entry: Entry;
@@ -22,6 +22,34 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
   const [isOptimisticallyDeleted, setIsOptimisticallyDeleted] = useState(false);
   const [feedbackGiven, setFeedbackGiven] = useState(entry.feedbackGiven ?? false);
   const [updatingFeedbackGiven, setUpdatingFeedbackGiven] = useState(false);
+  const [linkedGoals, setLinkedGoals] = useState<DevelopmentGoal[]>([]);
+
+  // Fetch linked goals
+  useEffect(() => {
+    async function fetchLinkedGoals() {
+      try {
+        const response = await fetch(`/api/entries/${entry.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.linkedGoalIds && data.linkedGoalIds.length > 0) {
+            // Fetch full goal details
+            const reportId = entry.reportId;
+            const goalsResponse = await fetch(`/api/reports/${reportId}/goals`);
+            if (goalsResponse.ok) {
+              const goalsData = await goalsResponse.json();
+              const linked = goalsData.goals.filter((g: DevelopmentGoal) =>
+                data.linkedGoalIds.includes(g.id)
+              );
+              setLinkedGoals(linked);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching linked goals:', error);
+      }
+    }
+    fetchLinkedGoals();
+  }, [entry.id, entry.reportId]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -107,9 +135,7 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
             {entry.notes && (
               <div>
                 <span className="text-xs font-medium uppercase tracking-wide text-[#71717A]">Notes</span>
-                <div className="prose prose-sm mt-0.5 max-w-none text-[#3F3F46]">
-                  <ReactMarkdown>{entry.notes}</ReactMarkdown>
-                </div>
+                <MarkdownContent className="mt-0.5 text-[#3F3F46]">{entry.notes}</MarkdownContent>
               </div>
             )}
           </div>
@@ -124,15 +150,13 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
                   href={entry.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#7C3AED] hover:text-[#6D28D9] hover:underline text-sm break-all"
+                  className="text-[#2563EB] hover:text-[#1D4ED8] hover:underline text-sm break-all"
                 >
                   {entry.link}
                 </a>
               </div>
             )}
-            <div className="prose prose-sm max-w-none text-[#3F3F46]">
-              <ReactMarkdown>{entry.notes || ''}</ReactMarkdown>
-            </div>
+            <MarkdownContent className="text-[#3F3F46]">{entry.notes || ''}</MarkdownContent>
           </div>
         );
 
@@ -142,9 +166,7 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
             <p className="text-sm text-[#71717A]">
               From: <span className="font-medium text-[#18181B]">{entry.providerName}</span>
             </p>
-            <div className="prose prose-sm max-w-none text-[#3F3F46]">
-              <ReactMarkdown>{entry.notes || ''}</ReactMarkdown>
-            </div>
+            <MarkdownContent className="text-[#3F3F46]">{entry.notes || ''}</MarkdownContent>
           </div>
         );
 
@@ -154,17 +176,13 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
             {entry.title && (
               <h3 className="text-sm font-medium text-[#18181B]">{entry.title}</h3>
             )}
-            <div className="prose prose-sm max-w-none text-[#3F3F46]">
-              <ReactMarkdown>{entry.notes || ''}</ReactMarkdown>
-            </div>
+            <MarkdownContent className="text-[#3F3F46]">{entry.notes || ''}</MarkdownContent>
           </div>
         );
 
       default:
         return (
-          <div className="prose prose-sm max-w-none text-[#3F3F46]">
-            <ReactMarkdown>{entry.notes || ''}</ReactMarkdown>
-          </div>
+          <MarkdownContent className="text-[#3F3F46]">{entry.notes || ''}</MarkdownContent>
         );
     }
   };
@@ -228,6 +246,21 @@ export function EntryCard({ entry, onEdit, onDelete, readOnly = false }: EntryCa
           )}
         </div>
         {renderContent()}
+        {linkedGoals.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-[#F4F4F5]">
+            <div className="flex flex-wrap gap-1.5">
+              {linkedGoals.map((goal) => (
+                <span
+                  key={goal.id}
+                  className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#F3E8FF] text-[#7C3AED]"
+                  title={goal.description || undefined}
+                >
+                  {goal.title}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <Modal

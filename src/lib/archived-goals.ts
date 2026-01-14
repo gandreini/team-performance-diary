@@ -1,5 +1,5 @@
-import { db, archivedGoals, reports, type ArchivedGoal, type NewArchivedGoal } from '@/db';
-import { eq, and } from 'drizzle-orm';
+import { db, archivedGoals, reports, developmentGoals, type ArchivedGoal, type NewArchivedGoal, type ArchivedGoalSnapshot } from '@/db';
+import { eq, and, asc } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function getArchivedGoals(reportId: string, cycleId: string): Promise<ArchivedGoal | null> {
@@ -14,14 +14,30 @@ export async function archiveGoalsForCycle(cycleId: string): Promise<void> {
   // Get all reports
   const allReports = await db.select().from(reports);
 
-  // For each report, copy their development_goals to archived_goals
+  // For each report, snapshot their development goals
   for (const report of allReports) {
-    if (report.developmentGoals) {
+    // Get structured goals for this report
+    const goals = await db.select()
+      .from(developmentGoals)
+      .where(eq(developmentGoals.reportId, report.id))
+      .orderBy(asc(developmentGoals.sortOrder));
+
+    // Only create archive if there are goals (structured or legacy)
+    if (goals.length > 0 || report.developmentGoals) {
+      // Create snapshot from structured goals
+      const goalsSnapshot: ArchivedGoalSnapshot[] = goals.map(g => ({
+        id: g.id,
+        title: g.title,
+        description: g.description,
+        sortOrder: g.sortOrder,
+      }));
+
       const newArchivedGoal: NewArchivedGoal = {
         id: uuidv4(),
         reportId: report.id,
         cycleId,
-        developmentGoals: report.developmentGoals,
+        developmentGoals: report.developmentGoals, // Keep legacy for backward compatibility
+        goalsSnapshot: goalsSnapshot.length > 0 ? JSON.stringify(goalsSnapshot) : null,
         createdAt: new Date().toISOString(),
       };
 
@@ -33,11 +49,8 @@ export async function archiveGoalsForCycle(cycleId: string): Promise<void> {
     }
   }
 
-  // Clear development_goals for all reports
-  await db.update(reports).set({
-    developmentGoals: null,
-    updatedAt: new Date().toISOString()
-  });
+  // Note: We no longer clear development goals since they persist across cycles
+  // The old developmentGoals text field on reports is deprecated
 }
 
 export async function getArchivedGoalsByCycle(cycleId: string): Promise<ArchivedGoal[]> {

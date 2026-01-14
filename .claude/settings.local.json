@@ -8,7 +8,13 @@
       "Bash(npm view:*)",
       "Bash(timeout 10 npm run dev)",
       "Bash(sqlite3:*)",
-      "Bash(npm run test:run:*)"
+      "Bash(npm run test:run:*)",
+      "Bash(npm run db:generate:*)",
+      "Bash(npm run db:migrate:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx tsc:*)",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__new_page"
     ]
   }
 }

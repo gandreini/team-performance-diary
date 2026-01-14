@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { db, cycles, reports, entries, archivedGoals } from '@/db';
-import type { Cycle, Report, Entry, ArchivedGoal } from '@/db';
+import { db, cycles, reports, entries, archivedGoals, developmentGoals, entryGoals } from '@/db';
+import type { Cycle, Report, Entry, ArchivedGoal, DevelopmentGoal, EntryGoal } from '@/db';
 
 interface BackupData {
   version: number;
@@ -10,6 +10,9 @@ interface BackupData {
     reports: Report[];
     entries: Entry[];
     archivedGoals: ArchivedGoal[];
+    // New in v2 - optional for backward compatibility with v1 backups
+    developmentGoals?: DevelopmentGoal[];
+    entryGoals?: EntryGoal[];
   };
 }
 
@@ -33,7 +36,9 @@ export async function POST(request: Request) {
     }
 
     // Delete existing data in correct order (respecting foreign keys)
+    await db.delete(entryGoals);  // References entries and developmentGoals
     await db.delete(entries);
+    await db.delete(developmentGoals);  // References reports
     await db.delete(archivedGoals);
     await db.delete(reports);
     await db.delete(cycles);
@@ -47,8 +52,18 @@ export async function POST(request: Request) {
       await db.insert(reports).values(backup.data.reports);
     }
 
+    // v2: Insert development goals before entries (so entry_goals can reference them)
+    if (backup.data.developmentGoals && backup.data.developmentGoals.length > 0) {
+      await db.insert(developmentGoals).values(backup.data.developmentGoals);
+    }
+
     if (backup.data.entries.length > 0) {
       await db.insert(entries).values(backup.data.entries);
+    }
+
+    // v2: Insert entry-goal links after both entries and goals exist
+    if (backup.data.entryGoals && backup.data.entryGoals.length > 0) {
+      await db.insert(entryGoals).values(backup.data.entryGoals);
     }
 
     if (backup.data.archivedGoals && backup.data.archivedGoals.length > 0) {
@@ -63,6 +78,8 @@ export async function POST(request: Request) {
         reports: backup.data.reports.length,
         entries: backup.data.entries.length,
         archivedGoals: backup.data.archivedGoals?.length || 0,
+        developmentGoals: backup.data.developmentGoals?.length || 0,
+        entryGoals: backup.data.entryGoals?.length || 0,
       },
     });
   } catch (error) {

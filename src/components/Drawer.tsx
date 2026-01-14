@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -62,8 +63,8 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
     '2xl': 'max-w-3xl',
   };
 
-  return (
-    <div className="fixed inset-0 z-50">
+  const drawerContent = (
+    <div className="fixed inset-0 z-[9999]">
       {/* Backdrop */}
       <div
         className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ease-out ${
@@ -99,4 +100,11 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
       </div>
     </div>
   );
+
+  // Use portal to render at document body level, escaping any parent stacking contexts
+  if (typeof document !== 'undefined') {
+    return createPortal(drawerContent, document.body);
+  }
+
+  return drawerContent;
 }

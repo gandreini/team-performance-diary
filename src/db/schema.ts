@@ -20,12 +20,32 @@ export const reports = sqliteTable('reports', {
   updatedAt: text('updated_at').notNull().default(new Date().toISOString()),
 });
 
+// Development goals table (structured goals per report)
+export const developmentGoals = sqliteTable('development_goals', {
+  id: text('id').primaryKey(),
+  reportId: text('report_id').notNull().references(() => reports.id, { onDelete: 'cascade' }),
+  title: text('title').notNull(),
+  description: text('description'),
+  sortOrder: integer('sort_order').notNull().default(0),
+  createdAt: text('created_at').notNull().default(new Date().toISOString()),
+  updatedAt: text('updated_at').notNull().default(new Date().toISOString()),
+});
+
 // Archived goals table (snapshot when cycle is archived)
 export const archivedGoals = sqliteTable('archived_goals', {
   id: text('id').primaryKey(),
   reportId: text('report_id').notNull().references(() => reports.id, { onDelete: 'cascade' }),
   cycleId: text('cycle_id').notNull().references(() => cycles.id, { onDelete: 'cascade' }),
-  developmentGoals: text('development_goals'),
+  developmentGoals: text('development_goals'), // Legacy field - kept for migration
+  goalsSnapshot: text('goals_snapshot'), // JSON array of structured goals
+  createdAt: text('created_at').notNull().default(new Date().toISOString()),
+});
+
+// Entry-goal junction table (links entries to development goals)
+export const entryGoals = sqliteTable('entry_goals', {
+  id: text('id').primaryKey(),
+  entryId: text('entry_id').notNull().references(() => entries.id, { onDelete: 'cascade' }),
+  goalId: text('goal_id').notNull().references(() => developmentGoals.id, { onDelete: 'cascade' }),
   createdAt: text('created_at').notNull().default(new Date().toISOString()),
 });
 
@@ -64,9 +84,23 @@ export type NewReport = typeof reports.$inferInsert;
 export type ArchivedGoal = typeof archivedGoals.$inferSelect;
 export type NewArchivedGoal = typeof archivedGoals.$inferInsert;
 
+export type DevelopmentGoal = typeof developmentGoals.$inferSelect;
+export type NewDevelopmentGoal = typeof developmentGoals.$inferInsert;
+
+export type EntryGoal = typeof entryGoals.$inferSelect;
+export type NewEntryGoal = typeof entryGoals.$inferInsert;
+
 export type Entry = typeof entries.$inferSelect;
 export type NewEntry = typeof entries.$inferInsert;
 
 export type EntryType = 'feedback' | 'accomplishment' | 'kudos' | 'notes' | 'career_conversation' | 'third_party_feedback';
 export type FeedbackType = 'positive' | 'constructive';
 export type CycleStatus = 'active' | 'archived';
+
+// For archived goals snapshot
+export interface ArchivedGoalSnapshot {
+  id: string;
+  title: string;
+  description: string | null;
+  sortOrder: number;
+}

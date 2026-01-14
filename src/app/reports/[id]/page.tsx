@@ -3,15 +3,15 @@
 import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/Button";
 import { EntryCard } from "@/components/EntryCard";
 import { Dropdown } from "@/components/Dropdown";
 import { AddEntryDrawer } from "@/components/AddEntryDrawer";
 import { EditReportDrawer } from "@/components/EditReportDrawer";
 import { ScrollArea } from "@/components/ScrollArea";
+import { GoalsList } from "@/components/GoalsList";
 import { useToast } from "@/components/Toast";
-import type { Report, Entry, Cycle, EntryType } from "@/db";
+import type { Report, Entry, Cycle, EntryType, DevelopmentGoal } from "@/db";
 
 const ENTRY_TYPES: { value: EntryType; label: string }[] = [
     { value: "feedback", label: "Feedback" },
@@ -43,6 +43,7 @@ export default function ReportDiaryPage({
 
     const [report, setReport] = useState<Report | null>(null);
     const [entries, setEntries] = useState<Entry[]>([]);
+    const [goals, setGoals] = useState<DevelopmentGoal[]>([]);
     const [cycle, setCycle] = useState<Cycle | null>(null);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<EntryType | "all">("all");
@@ -78,6 +79,13 @@ export default function ReportDiaryPage({
             );
             const entriesData = await entriesResponse.json();
             setEntries(entriesData.entries || []);
+
+            // Get goals for this report
+            const goalsResponse = await fetch(
+                `/api/reports/${resolvedParams.id}/goals`
+            );
+            const goalsData = await goalsResponse.json();
+            setGoals(goalsData.goals || []);
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -127,10 +135,10 @@ export default function ReportDiaryPage({
             </nav>
 
             {/* Two-column layout for wide screens */}
-            <div className="xl:flex xl:gap-4">
+            <div className="xl:flex xl:gap-4 relative z-0">
                 {/* Left Column - Sticky on wide screens */}
                 <div className="xl:w-[500px] xl:flex-shrink-0">
-                    <div className="xl:sticky xl:top-4">
+                    <div className="xl:sticky xl:top-4 z-10">
                         {/* Header */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                             <h1 className="text-lg font-semibold text-[#18181B] tracking-tight">
@@ -153,7 +161,7 @@ export default function ReportDiaryPage({
                                 }
                                 className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-[#FAFAFA] transition-colors rounded-md"
                             >
-                                <h2 className="text-sm font-semibold text-[#18181B] tracking-tight">
+                                <h2 className="text-md font-semibold text-[#18181B] tracking-tight">
                                     Development Goals
                                 </h2>
                                 <svg
@@ -175,20 +183,13 @@ export default function ReportDiaryPage({
                             {isGoalsExpanded && (
                                 <ScrollArea
                                     maxHeight="calc(100vh - 220px)"
-                                    className="px-4 pb-4"
+                                    className="px-4 pb-3 pt-4"
                                 >
-                                    {report.developmentGoals ? (
-                                        <div className="prose prose-sm max-w-none">
-                                            <ReactMarkdown>
-                                                {report.developmentGoals}
-                                            </ReactMarkdown>
-                                        </div>
-                                    ) : (
-                                        <p className="text-sm text-[#71717A] italic">
-                                            No development goals set. Use Edit
-                                            Report to add.
-                                        </p>
-                                    )}
+                                    <GoalsList
+                                        reportId={report.id}
+                                        goals={goals}
+                                        onUpdate={fetchData}
+                                    />
                                 </ScrollArea>
                             )}
                         </div>

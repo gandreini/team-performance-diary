@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getEntryById, updateEntry, deleteEntry } from '@/lib/entries';
+import { linkEntryToGoals, getGoalIdsForEntry } from '@/lib/goals';
 
 function isValidUrl(string: string): boolean {
   try {
@@ -25,7 +26,10 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ entry });
+    // Get linked goal IDs
+    const linkedGoalIds = await getGoalIdsForEntry(id);
+
+    return NextResponse.json({ entry, linkedGoalIds });
   } catch (error) {
     console.error('Error fetching entry:', error);
     return NextResponse.json(
@@ -264,16 +268,36 @@ export async function PUT(
       }
     }
 
-    if (Object.keys(updateData).length === 0) {
+    // Handle goal linking (optional, always allowed regardless of entry type)
+    const { goal_ids } = body;
+    if (goal_ids !== undefined) {
+      if (!Array.isArray(goal_ids)) {
+        return NextResponse.json(
+          { error: 'goal_ids must be an array' },
+          { status: 400 }
+        );
+      }
+      await linkEntryToGoals(id, goal_ids);
+    }
+
+    // Only require updateData if we're not just updating goal links
+    if (Object.keys(updateData).length === 0 && goal_ids === undefined) {
       return NextResponse.json(
         { error: 'No valid fields to update' },
         { status: 400 }
       );
     }
 
-    const entry = await updateEntry(id, updateData);
+    // Update entry fields if there are any
+    if (Object.keys(updateData).length > 0) {
+      await updateEntry(id, updateData);
+    }
 
-    return NextResponse.json({ entry });
+    // Fetch updated entry
+    const entry = await getEntryById(id);
+    const linkedGoalIds = await getGoalIdsForEntry(id);
+
+    return NextResponse.json({ entry, linkedGoalIds });
   } catch (error) {
     console.error('Error updating entry:', error);
     return NextResponse.json(

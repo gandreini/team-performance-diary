@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Drawer } from './Drawer';
 import { Button } from './Button';
 import { MarkdownEditor } from './MarkdownEditor';
+import { GoalLinkSelector } from './GoalLinkSelector';
 import { useToast } from './Toast';
 import type { EntryType, FeedbackType, Entry } from '@/db';
 
@@ -48,6 +49,7 @@ export function AddEntryDrawer({
   const [link, setLink] = useState('');
   const [providerName, setProviderName] = useState('');
   const [title, setTitle] = useState('');
+  const [linkedGoalIds, setLinkedGoalIds] = useState<string[]>([]);
 
   const isEditing = !!editEntry;
 
@@ -63,6 +65,14 @@ export function AddEntryDrawer({
         setProviderName(editEntry.providerName || '');
         setTitle(editEntry.title || '');
         setHasChanges(false);
+
+        // Fetch linked goals for this entry
+        fetch(`/api/entries/${editEntry.id}`)
+          .then(res => res.json())
+          .then(data => {
+            setLinkedGoalIds(data.linkedGoalIds || []);
+          })
+          .catch(console.error);
       } else {
         resetForm();
       }
@@ -78,6 +88,7 @@ export function AddEntryDrawer({
     setLink('');
     setProviderName('');
     setTitle('');
+    setLinkedGoalIds([]);
     setHasChanges(false);
   };
 
@@ -166,6 +177,11 @@ export function AddEntryDrawer({
           break;
         default:
           body.notes = notes.trim();
+      }
+
+      // Include linked goals when editing
+      if (isEditing && linkedGoalIds.length > 0) {
+        body.goal_ids = linkedGoalIds;
       }
 
       const response = await fetch(url, {
@@ -436,6 +452,20 @@ export function AddEntryDrawer({
         <div className="flex-1 min-h-0">
           {renderForm()}
         </div>
+
+        {/* Goal Linking - Only shown when editing */}
+        {isEditing && (
+          <div className="pt-5 mt-5 border-t border-[#F4F4F5] flex-shrink-0">
+            <label className="block text-sm font-medium text-[#3F3F46] mb-2">
+              Link to Development Goals
+            </label>
+            <GoalLinkSelector
+              reportId={reportId}
+              selectedGoalIds={linkedGoalIds}
+              onChange={(goalIds) => { setLinkedGoalIds(goalIds); setHasChanges(true); }}
+            />
+          </div>
+        )}
 
         <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F4F4F5] flex-shrink-0">
           <Button type="button" variant="secondary" onClick={handleClose}>

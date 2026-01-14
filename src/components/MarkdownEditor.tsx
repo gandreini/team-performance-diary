@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { MarkdownContent } from './MarkdownContent';
 
 interface MarkdownEditorProps {
   value: string;
@@ -37,7 +37,7 @@ export function MarkdownEditor({
           onClick={() => setActiveTab('write')}
           className={`px-4 py-2 text-sm font-medium transition-colors ${
             activeTab === 'write'
-              ? 'text-[#18181B] bg-white border-b-2 border-[#7C3AED] -mb-px'
+              ? 'text-[#18181B] bg-white border-b-2 border-[#18181B] -mb-px'
               : 'text-[#71717A] hover:text-[#18181B]'
           }`}
         >
@@ -48,7 +48,7 @@ export function MarkdownEditor({
           onClick={() => setActiveTab('preview')}
           className={`px-4 py-2 text-sm font-medium transition-colors ${
             activeTab === 'preview'
-              ? 'text-[#18181B] bg-white border-b-2 border-[#7C3AED] -mb-px'
+              ? 'text-[#18181B] bg-white border-b-2 border-[#18181B] -mb-px'
               : 'text-[#71717A] hover:text-[#18181B]'
           }`}
         >
@@ -72,9 +72,7 @@ export function MarkdownEditor({
           style={fillHeight ? undefined : { minHeight: `${rows * 1.5 + 1}rem` }}
         >
           {value.trim() ? (
-            <div className="prose prose-sm max-w-none">
-              <ReactMarkdown>{value}</ReactMarkdown>
-            </div>
+            <MarkdownContent>{value}</MarkdownContent>
           ) : (
             <p className="text-sm text-[#A1A1AA] italic">Nothing to preview</p>
           )}

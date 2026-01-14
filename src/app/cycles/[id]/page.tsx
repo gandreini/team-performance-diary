@@ -3,10 +3,10 @@
 import { useState, useEffect, useCallback, use } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
+import { MarkdownContent } from '@/components/MarkdownContent';
 import { Button } from '@/components/Button';
 import { EntryCard } from '@/components/EntryCard';
-import type { Report, Entry, Cycle, ArchivedGoal, EntryType } from '@/db';
+import type { Report, Entry, Cycle, ArchivedGoal, EntryType, ArchivedGoalSnapshot } from '@/db';
 
 const ENTRY_TYPE_OPTIONS: { value: EntryType | 'all'; label: string }[] = [
   { value: 'all', label: 'All Types' },
@@ -180,15 +180,48 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                   <h3 className="text-sm font-semibold text-[#18181B] tracking-tight mb-3">
                     Development Goals
                   </h3>
-                  {archivedGoals?.developmentGoals ? (
-                    <div className="prose prose-sm max-w-none text-[#3F3F46]">
-                      <ReactMarkdown>{archivedGoals.developmentGoals}</ReactMarkdown>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-[#71717A] italic">
-                      No development goals were set for this cycle.
-                    </p>
-                  )}
+                  {(() => {
+                    // Try to parse structured goals first
+                    if (archivedGoals?.goalsSnapshot) {
+                      try {
+                        const goals: ArchivedGoalSnapshot[] = JSON.parse(archivedGoals.goalsSnapshot);
+                        if (goals.length > 0) {
+                          return (
+                            <div className="space-y-3">
+                              {goals.map((goal) => (
+                                <div
+                                  key={goal.id}
+                                  className="border-b border-[#F4F4F5] pb-3 last:border-0 last:pb-0"
+                                >
+                                  <h4 className="font-medium text-sm text-[#18181B]">{goal.title}</h4>
+                                  {goal.description && (
+                                    <MarkdownContent className="mt-1 text-[#52525B]">
+                                      {goal.description}
+                                    </MarkdownContent>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        }
+                      } catch {
+                        // Fall through to legacy check
+                      }
+                    }
+                    // Fall back to legacy text field
+                    if (archivedGoals?.developmentGoals) {
+                      return (
+                        <MarkdownContent className="text-[#3F3F46]">
+                          {archivedGoals.developmentGoals}
+                        </MarkdownContent>
+                      );
+                    }
+                    return (
+                      <p className="text-sm text-[#71717A] italic">
+                        No development goals were set for this cycle.
+                      </p>
+                    );
+                  })()}
                 </div>
 
                 {/* Entries */}
