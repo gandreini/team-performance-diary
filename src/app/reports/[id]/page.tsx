@@ -182,7 +182,7 @@ export default function ReportDiaryPage({
                             </button>
                             {isGoalsExpanded && (
                                 <ScrollArea
-                                    maxHeight="calc(100vh - 220px)"
+                                    maxHeight="calc(100vh - 280px)"
                                     className="px-4 pb-3 pt-4"
                                 >
                                     <GoalsList
@@ -201,9 +201,6 @@ export default function ReportDiaryPage({
                     {/* Header row - matches left column header height */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                            <h2 className="text-sm font-semibold text-[#18181B] tracking-tight">
-                                Entries
-                            </h2>
                             <select
                                 value={filter}
                                 onChange={(e) =>
@@ -211,7 +208,7 @@ export default function ReportDiaryPage({
                                         e.target.value as EntryType | "all"
                                     )
                                 }
-                                className="px-3 py-1.5 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[36px]"
+                                className="px-3 py-2 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[40px]"
                             >
                                 {ENTRY_TYPE_OPTIONS.map((option) => (
                                     <option
