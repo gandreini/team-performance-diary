@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Drawer } from './Drawer';
 import { Modal } from './Modal';
 import { Button } from './Button';
+import { AiTextImprove } from './AiTextImprove';
 import { useToast } from './Toast';
 import type { Report } from '@/db';
 
@@ -195,15 +196,17 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
               <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
                 Development goals (optional)
               </label>
-              <textarea
-                id="developmentGoals"
-                value={developmentGoals}
-                onChange={(e) => setDevelopmentGoals(e.target.value)}
-                className={`w-full flex-1 min-h-[150px] px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors resize-none ${
-                  errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
-                }`}
-                placeholder="Markdown supported"
-              />
+              <AiTextImprove value={developmentGoals} onChange={setDevelopmentGoals} context="development goals" maxLength={5000}>
+                <textarea
+                  id="developmentGoals"
+                  value={developmentGoals}
+                  onChange={(e) => setDevelopmentGoals(e.target.value)}
+                  className={`w-full flex-1 min-h-[150px] px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors resize-none ${
+                    errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
+                  }`}
+                  placeholder="Markdown supported"
+                />
+              </AiTextImprove>
               <div className="flex justify-between mt-1">
                 {errors.developmentGoals && (
                   <p className="text-xs text-[#DC2626]">{errors.developmentGoals}</p>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Drawer } from './Drawer';
 import { Button } from './Button';
 import { MarkdownEditor } from './MarkdownEditor';
+import { AiTextImprove } from './AiTextImprove';
 import { GoalLinkSelector } from './GoalLinkSelector';
 import { useToast } from './Toast';
 import type { EntryType, FeedbackType, Entry } from '@/db';
@@ -251,13 +252,15 @@ export function AddEntryDrawer({
         <p className="text-xs text-[#71717A] mb-1.5">
           Describe the specific context—when and where this occurred
         </p>
-        <textarea
-          id="situation"
-          value={situation}
-          onChange={(e) => { setSituation(e.target.value); setHasChanges(true); }}
-          rows={4}
-          className={textareaClassName}
-        />
+        <AiTextImprove value={situation} onChange={(v) => { setSituation(v); setHasChanges(true); }} context="feedback situation" maxLength={1000}>
+          <textarea
+            id="situation"
+            value={situation}
+            onChange={(e) => { setSituation(e.target.value); setHasChanges(true); }}
+            rows={4}
+            className={textareaClassName}
+          />
+        </AiTextImprove>
         <p className={`text-xs mt-1 text-right ${situation.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
           {situation.length} / 1000
         </p>
@@ -270,13 +273,15 @@ export function AddEntryDrawer({
         <p className="text-xs text-[#71717A] mb-1.5">
           Describe the specific, observable action (not your interpretation)
         </p>
-        <textarea
-          id="behavior"
-          value={behavior}
-          onChange={(e) => { setBehavior(e.target.value); setHasChanges(true); }}
-          rows={4}
-          className={textareaClassName}
-        />
+        <AiTextImprove value={behavior} onChange={(v) => { setBehavior(v); setHasChanges(true); }} context="feedback behavior observation" maxLength={1000}>
+          <textarea
+            id="behavior"
+            value={behavior}
+            onChange={(e) => { setBehavior(e.target.value); setHasChanges(true); }}
+            rows={4}
+            className={textareaClassName}
+          />
+        </AiTextImprove>
         <p className={`text-xs mt-1 text-right ${behavior.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
           {behavior.length} / 1000
         </p>
@@ -289,13 +294,15 @@ export function AddEntryDrawer({
         <p className="text-xs text-[#71717A] mb-1.5">
           Describe the effect on you, the team, or outcomes
         </p>
-        <textarea
-          id="impact"
-          value={impact}
-          onChange={(e) => { setImpact(e.target.value); setHasChanges(true); }}
-          rows={4}
-          className={textareaClassName}
-        />
+        <AiTextImprove value={impact} onChange={(v) => { setImpact(v); setHasChanges(true); }} context="feedback impact description" maxLength={1000}>
+          <textarea
+            id="impact"
+            value={impact}
+            onChange={(e) => { setImpact(e.target.value); setHasChanges(true); }}
+            rows={4}
+            className={textareaClassName}
+          />
+        </AiTextImprove>
         <p className={`text-xs mt-1 text-right ${impact.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
           {impact.length} / 1000
         </p>
@@ -310,6 +317,7 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={2000}
           fillHeight
+          aiContext="feedback additional notes"
         />
       </div>
     </div>
@@ -343,6 +351,7 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
           fillHeight
+          aiContext="kudos description"
         />
       </div>
     </div>
@@ -375,12 +384,13 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
           fillHeight
+          aiContext="third-party feedback content"
         />
       </div>
     </div>
   );
 
-  const renderSimpleForm = (label: string) => (
+  const renderSimpleForm = (label: string, context: string) => (
     <div className="flex flex-col h-full">
       <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
         {label}
@@ -390,6 +400,7 @@ export function AddEntryDrawer({
         onChange={(value) => { setNotes(value); setHasChanges(true); }}
         maxLength={5000}
         fillHeight
+        aiContext={context}
       />
     </div>
   );
@@ -422,6 +433,7 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
           fillHeight
+          aiContext="accomplishment description"
         />
       </div>
     </div>
@@ -438,9 +450,9 @@ export function AddEntryDrawer({
       case 'accomplishment':
         return renderAccomplishmentForm();
       case 'notes':
-        return renderSimpleForm('Note');
+        return renderSimpleForm('Note', 'performance note');
       case 'career_conversation':
-        return renderSimpleForm('Conversation notes');
+        return renderSimpleForm('Conversation notes', 'career conversation notes');
       default:
         return null;
     }

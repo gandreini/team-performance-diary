@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Modal } from './Modal';
 import { Button } from './Button';
+import { AiTextImprove } from './AiTextImprove';
 import { useToast } from './Toast';
 
 interface AddReportModalProps {
@@ -148,16 +149,18 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
           <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
             Development goals (optional)
           </label>
-          <textarea
-            id="developmentGoals"
-            value={developmentGoals}
-            onChange={(e) => setDevelopmentGoals(e.target.value)}
-            rows={4}
-            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#A1A1AA] resize-none ${
-              errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
-            }`}
-            placeholder="Enter development goals (markdown supported)"
-          />
+          <AiTextImprove value={developmentGoals} onChange={setDevelopmentGoals} context="development goals" maxLength={5000}>
+            <textarea
+              id="developmentGoals"
+              value={developmentGoals}
+              onChange={(e) => setDevelopmentGoals(e.target.value)}
+              rows={4}
+              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#A1A1AA] resize-none ${
+                errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
+              }`}
+              placeholder="Enter development goals (markdown supported)"
+            />
+          </AiTextImprove>
           <div className="flex justify-between mt-1">
             {errors.developmentGoals && (
               <p className="text-xs text-[#DC2626]">{errors.developmentGoals}</p>

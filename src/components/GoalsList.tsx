@@ -261,6 +261,7 @@ export function GoalsList({
                             maxLength={2000}
                             placeholder="Add details about this goal..."
                             fillHeight
+                            aiContext="development goal description"
                         />
                     </div>
                     <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F4F4F5] flex-shrink-0">
