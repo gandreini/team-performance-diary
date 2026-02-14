@@ -49,6 +49,17 @@ export const entryGoals = sqliteTable('entry_goals', {
   createdAt: text('created_at').notNull().default(new Date().toISOString()),
 });
 
+// Report summaries table (AI-generated, per report per cycle)
+export const reportSummaries = sqliteTable('report_summaries', {
+  id: text('id').primaryKey(),
+  reportId: text('report_id').notNull().references(() => reports.id, { onDelete: 'cascade' }),
+  cycleId: text('cycle_id').notNull().references(() => cycles.id, { onDelete: 'cascade' }),
+  content: text('content').notNull(),
+  generatedAt: text('generated_at').notNull(),
+  createdAt: text('created_at').notNull().default(new Date().toISOString()),
+  updatedAt: text('updated_at').notNull().default(new Date().toISOString()),
+});
+
 // Entries table
 export const entries = sqliteTable('entries', {
   id: text('id').primaryKey(),
@@ -89,6 +100,9 @@ export type NewDevelopmentGoal = typeof developmentGoals.$inferInsert;
 
 export type EntryGoal = typeof entryGoals.$inferSelect;
 export type NewEntryGoal = typeof entryGoals.$inferInsert;
+
+export type ReportSummary = typeof reportSummaries.$inferSelect;
+export type NewReportSummary = typeof reportSummaries.$inferInsert;
 
 export type Entry = typeof entries.$inferSelect;
 export type NewEntry = typeof entries.$inferInsert;
