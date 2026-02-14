@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-02-14
+
+### Fixed (Code Review)
+- Atomic goal linking on entry creation: POST `/api/entries` now accepts `goal_ids` directly, eliminating the fragile two-step POST+PUT pattern in AddEntryDrawer
+- CSS variable bug: `--primary-600` was duplicating `--primary-500` (`#3B82F6`), now correctly set to `#2563EB`
+- `--primary-700` corrected from `#2563EB` to `#1D4ED8` for proper blue scale progression
+
+### Changed
+- AddEntryDrawer sends `goal_ids` in the request body for both create and edit (single request), removing 15 lines of client-side two-step save logic
+- AiTextImprove: moved sparkle button outside textarea to top-right bar (matching MarkdownEditor style), added "Improve" label
+- AI loading animation: stronger glow (0.45 opacity at peak), faster cycle (1.5s), animated box-shadow, child textarea border hidden during loading
+- `.ai-loading-border > textarea` rule hides textarea's own border to prevent double-border detachment
+
+### Files Modified
+- `src/app/api/entries/route.ts` - Import `linkEntryToGoals`, call after entry creation
+- `src/components/AddEntryDrawer.tsx` - Simplified save: always include `goal_ids` in body
+- `src/components/AiTextImprove.tsx` - Button moved outside field, loading border wraps children properly
+- `src/app/globals.css` - Fixed CSS vars, enhanced AI animation, added `.ai-loading-border > textarea` rule
+
 ## 2026-01-12
 
 ### Added

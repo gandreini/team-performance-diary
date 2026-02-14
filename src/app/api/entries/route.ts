@@ -9,6 +9,7 @@ import {
 } from '@/lib/entries';
 import { getReportById } from '@/lib/reports';
 import { ensureActiveCycle } from '@/lib/cycles';
+import { linkEntryToGoals } from '@/lib/goals';
 import type { EntryType, FeedbackType } from '@/db';
 
 function isValidUrl(string: string): boolean {
@@ -303,6 +304,11 @@ export async function POST(request: Request) {
           { error: 'Invalid entry type' },
           { status: 400 }
         );
+    }
+
+    // Link goals if provided
+    if (body.goal_ids && Array.isArray(body.goal_ids)) {
+      await linkEntryToGoals(entry.id, body.goal_ids);
     }
 
     return NextResponse.json({ entry }, { status: 201 });
