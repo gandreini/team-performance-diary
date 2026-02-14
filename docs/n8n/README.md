@@ -24,8 +24,8 @@ Go to **Settings > Variables** in your N8N instance and add:
 After activating each workflow, click the Webhook node to see its production URL. It will look like:
 
 ```
-https://your-n8n-instance.com/webhook/improve-text
-https://your-n8n-instance.com/webhook/report-summary
+https://n8n.mondo.surf/webhook/tpd-improve-text
+https://n8n.mondo.surf/webhook/tpd-report-summary
 ```
 
 ### 4. Configure the App
@@ -33,8 +33,8 @@ https://your-n8n-instance.com/webhook/report-summary
 Add the webhook URLs to your `.env`:
 
 ```
-N8N_IMPROVE_TEXT_WEBHOOK_URL=https://your-n8n-instance.com/webhook/improve-text
-N8N_REPORT_SUMMARY_WEBHOOK_URL=https://your-n8n-instance.com/webhook/report-summary
+N8N_IMPROVE_TEXT_WEBHOOK_URL=https://n8n.mondo.surf/webhook/tpd-improve-text
+N8N_REPORT_SUMMARY_WEBHOOK_URL=https://n8n.mondo.surf/webhook/tpd-report-summary
 ```
 
 Optionally, if you enabled webhook authentication in N8N:
