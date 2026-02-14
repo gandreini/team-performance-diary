@@ -211,7 +211,7 @@ export function AddEntryModal({
         <button
           key={value}
           onClick={() => handleTypeSelect(value)}
-          className="p-3 text-left border border-[#E5E7EB] rounded-md hover:border-[#8B5CF6] hover:bg-[#F5F3FF] transition-colors"
+          className="p-3 text-left border border-[#E5E7EB] rounded-md hover:border-[#3B82F6] hover:bg-[#EFF6FF] transition-colors"
         >
           <span className="text-sm font-medium text-[#111827]">{label}</span>
         </button>
@@ -219,8 +219,8 @@ export function AddEntryModal({
     </div>
   );
 
-  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF]";
-  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF] resize-none";
+  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] transition-colors placeholder:text-[#9CA3AF]";
+  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] transition-colors placeholder:text-[#9CA3AF] resize-none";
 
   const renderFeedbackForm = () => (
     <>
@@ -234,7 +234,7 @@ export function AddEntryModal({
               value="positive"
               checked={feedbackType === 'positive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
+              className="h-4 w-4 text-[#3B82F6] focus:ring-[#3B82F6] border-[#D1D5DB]"
             />
             <span className="ml-2 text-sm text-[#374151]">Positive</span>
           </label>
@@ -245,7 +245,7 @@ export function AddEntryModal({
               value="constructive"
               checked={feedbackType === 'constructive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
+              className="h-4 w-4 text-[#3B82F6] focus:ring-[#3B82F6] border-[#D1D5DB]"
             />
             <span className="ml-2 text-sm text-[#374151]">Constructive</span>
           </label>

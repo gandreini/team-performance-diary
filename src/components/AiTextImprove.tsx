@@ -31,7 +31,7 @@ export function AiTextImprove({
   } = useAiTextImprove({ value, onChange, context });
 
   return (
-    <div className="relative">
+    <div className={`relative rounded-md ${state === 'loading' ? 'ai-loading-border border' : ''}`}>
       {/* Sparkle button */}
       <div className="absolute right-1.5 top-1.5 z-10">
         <button
@@ -39,7 +39,7 @@ export function AiTextImprove({
           onClick={handleImprove}
           disabled={isEmpty || state === 'loading' || state === 'diff'}
           title={isEmpty ? 'Write some text first' : 'Improve text with AI'}
-          className="inline-flex items-center justify-center w-7 h-7 rounded-md text-[#9CA3AF] hover:text-[#7C3AED] hover:bg-[#F5F3FF] disabled:opacity-40 disabled:hover:text-[#9CA3AF] disabled:hover:bg-transparent transition-colors"
+          className="inline-flex items-center justify-center w-7 h-7 rounded-md text-[#9CA3AF] hover:text-[#3B82F6] hover:bg-[#EFF6FF] disabled:opacity-40 disabled:hover:text-[#9CA3AF] disabled:hover:bg-transparent transition-colors"
         >
           {state === 'loading' ? (
             <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">

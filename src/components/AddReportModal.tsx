@@ -116,8 +116,8 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
             id="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] ${
-              errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors placeholder:text-[#9CA3AF] ${
+              errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
             }`}
             placeholder="Enter first name"
           />
@@ -135,8 +135,8 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
             id="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] ${
-              errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors placeholder:text-[#9CA3AF] ${
+              errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
             }`}
             placeholder="Enter last name"
           />
@@ -155,8 +155,8 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
               value={developmentGoals}
               onChange={(e) => setDevelopmentGoals(e.target.value)}
               rows={4}
-              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] resize-none ${
-                errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors placeholder:text-[#9CA3AF] resize-none ${
+                errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
               }`}
               placeholder="Enter development goals (markdown supported)"
             />

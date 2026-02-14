@@ -55,6 +55,7 @@ export default function ReportDiaryPage({
     const [isEditReportDrawerOpen, setIsEditReportDrawerOpen] = useState(false);
     const [editingEntry, setEditingEntry] = useState<Entry | null>(null);
     const [isGoalsExpanded, setIsGoalsExpanded] = useState(true);
+    const [entryRefreshKey, setEntryRefreshKey] = useState(0);
 
     const fetchData = useCallback(async () => {
         try {
@@ -106,7 +107,7 @@ export default function ReportDiaryPage({
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#7C3AED]" />
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#3B82F6]" />
             </div>
         );
     }
@@ -216,7 +217,7 @@ export default function ReportDiaryPage({
                                         e.target.value as EntryType | "all"
                                     )
                                 }
-                                className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[40px]"
+                                className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] bg-white transition-colors min-h-[40px]"
                             >
                                 {ENTRY_TYPE_OPTIONS.map((option) => (
                                     <option
@@ -322,6 +323,7 @@ export default function ReportDiaryPage({
                                 <EntryCard
                                     key={entry.id}
                                     entry={entry}
+                                    refreshKey={entryRefreshKey}
                                     onEdit={() => {
                                         setEditingEntry(entry);
                                         setSelectedEntryType(entry.entryType);
@@ -344,7 +346,7 @@ export default function ReportDiaryPage({
                         setSelectedEntryType(null);
                         setEditingEntry(null);
                     }}
-                    onSuccess={fetchData}
+                    onSuccess={() => { fetchData(); setEntryRefreshKey(k => k + 1); }}
                     reportId={report.id}
                     cycleId={cycle.id}
                     entryType={editingEntry?.entryType || selectedEntryType}

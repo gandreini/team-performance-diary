@@ -181,7 +181,7 @@ export function AddEntryDrawer({
       }
 
       // Include linked goals when editing
-      if (isEditing && linkedGoalIds.length > 0) {
+      if (isEditing) {
         body.goal_ids = linkedGoalIds;
       }
 
@@ -194,6 +194,23 @@ export function AddEntryDrawer({
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.error || 'Failed to save entry');
+      }
+
+      // When creating, link goals via a separate PUT if any selected
+      if (!isEditing && linkedGoalIds.length > 0) {
+        const responseData = await response.json();
+        const newEntryId = responseData.entry?.id;
+        if (newEntryId) {
+          try {
+            await fetch(`/api/entries/${newEntryId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ goal_ids: linkedGoalIds }),
+            });
+          } catch {
+            showToast('Entry saved but goal linking failed. Edit the entry to retry.', 'error');
+          }
+        }
       }
 
       const entryLabel = ENTRY_TYPE_LABELS[entryType];
@@ -212,8 +229,8 @@ export function AddEntryDrawer({
     return `${isEditing ? 'Edit' : 'Add'} ${typeLabel}`;
   };
 
-  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF]";
-  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF] resize-none";
+  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] transition-colors placeholder:text-[#9CA3AF]";
+  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] transition-colors placeholder:text-[#9CA3AF] resize-none";
 
   const renderFeedbackForm = () => (
     <div className="flex flex-col h-full gap-6">
@@ -227,7 +244,7 @@ export function AddEntryDrawer({
               value="positive"
               checked={feedbackType === 'positive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
+              className="h-4 w-4 text-[#3B82F6] focus:ring-[#3B82F6] border-[#D1D5DB]"
             />
             <span className="ml-2 text-sm text-[#374151]">Positive</span>
           </label>
@@ -238,7 +255,7 @@ export function AddEntryDrawer({
               value="constructive"
               checked={feedbackType === 'constructive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
+              className="h-4 w-4 text-[#3B82F6] focus:ring-[#3B82F6] border-[#D1D5DB]"
             />
             <span className="ml-2 text-sm text-[#374151]">Constructive</span>
           </label>
@@ -465,19 +482,17 @@ export function AddEntryDrawer({
           {renderForm()}
         </div>
 
-        {/* Goal Linking - Only shown when editing */}
-        {isEditing && (
-          <div className="pt-5 mt-5 border-t border-[#F3F4F6] flex-shrink-0">
-            <label className="block text-sm font-medium text-[#374151] mb-2">
-              Link to Development Goals
-            </label>
-            <GoalLinkSelector
-              reportId={reportId}
-              selectedGoalIds={linkedGoalIds}
-              onChange={(goalIds) => { setLinkedGoalIds(goalIds); setHasChanges(true); }}
-            />
-          </div>
-        )}
+        {/* Goal Linking */}
+        <div className="pt-5 mt-5 border-t border-[#F3F4F6] flex-shrink-0">
+          <label className="block text-sm font-medium text-[#374151] mb-2">
+            Link to Development Goals
+          </label>
+          <GoalLinkSelector
+            reportId={reportId}
+            selectedGoalIds={linkedGoalIds}
+            onChange={(goalIds) => { setLinkedGoalIds(goalIds); setHasChanges(true); }}
+          />
+        </div>
 
         <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F3F4F6] flex-shrink-0">
           <Button type="button" variant="secondary" onClick={handleClose}>

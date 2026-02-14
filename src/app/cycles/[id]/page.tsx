@@ -106,7 +106,7 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#7C3AED]" />
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#3B82F6]" />
       </div>
     );
   }
@@ -157,7 +157,7 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                   onClick={() => setSelectedReportId(report.id)}
                   className={`whitespace-nowrap text-left px-3 py-2 rounded-md transition-colors text-sm min-h-[40px] ${
                     selectedReportId === report.id
-                      ? 'bg-[#F5F3FF] text-[#7C3AED] font-medium'
+                      ? 'bg-[#EFF6FF] text-[#3B82F6] font-medium'
                       : 'hover:bg-[#F9FAFB] text-[#4B5563] bg-[#F3F4F6] md:bg-transparent'
                   }`}
                 >
@@ -231,7 +231,7 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                     <select
                       value={filter}
                       onChange={(e) => setFilter(e.target.value as EntryType | 'all')}
-                      className="px-3 py-1.5 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[36px]"
+                      className="px-3 py-1.5 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] bg-white transition-colors min-h-[36px]"
                     >
                       {ENTRY_TYPE_OPTIONS.map(option => (
                         <option key={option.value} value={option.value}>
