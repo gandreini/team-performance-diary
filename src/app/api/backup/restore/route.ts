@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { db, cycles, reports, entries, archivedGoals, developmentGoals, entryGoals } from '@/db';
-import type { Cycle, Report, Entry, ArchivedGoal, DevelopmentGoal, EntryGoal } from '@/db';
+import { db, cycles, reports, entries, archivedGoals, developmentGoals, entryGoals, reportSummaries } from '@/db';
+import type { Cycle, Report, Entry, ArchivedGoal, DevelopmentGoal, EntryGoal, ReportSummary } from '@/db';
 
 interface BackupData {
   version: number;
@@ -13,6 +13,8 @@ interface BackupData {
     // New in v2 - optional for backward compatibility with v1 backups
     developmentGoals?: DevelopmentGoal[];
     entryGoals?: EntryGoal[];
+    // New in v3 - optional for backward compatibility
+    reportSummaries?: ReportSummary[];
   };
 }
 
@@ -37,6 +39,7 @@ export async function POST(request: Request) {
 
     // Delete existing data in correct order (respecting foreign keys)
     await db.delete(entryGoals);  // References entries and developmentGoals
+    await db.delete(reportSummaries);  // References reports and cycles
     await db.delete(entries);
     await db.delete(developmentGoals);  // References reports
     await db.delete(archivedGoals);
@@ -70,6 +73,11 @@ export async function POST(request: Request) {
       await db.insert(archivedGoals).values(backup.data.archivedGoals);
     }
 
+    // v3: Insert report summaries after both reports and cycles exist
+    if (backup.data.reportSummaries && backup.data.reportSummaries.length > 0) {
+      await db.insert(reportSummaries).values(backup.data.reportSummaries);
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Backup restored successfully',
@@ -80,6 +88,7 @@ export async function POST(request: Request) {
         archivedGoals: backup.data.archivedGoals?.length || 0,
         developmentGoals: backup.data.developmentGoals?.length || 0,
         entryGoals: backup.data.entryGoals?.length || 0,
+        reportSummaries: backup.data.reportSummaries?.length || 0,
       },
     });
   } catch (error) {

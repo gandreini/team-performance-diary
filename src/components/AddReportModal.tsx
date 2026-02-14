@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Modal } from './Modal';
 import { Button } from './Button';
+import { AiTextImprove } from './AiTextImprove';
 import { useToast } from './Toast';
 
 interface AddReportModalProps {
@@ -107,7 +108,7 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
     <Modal isOpen={isOpen} onClose={handleClose} title="Add Report">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+          <label htmlFor="firstName" className="block text-sm font-medium text-[#374151] mb-1.5">
             First name
           </label>
           <input
@@ -115,8 +116,8 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
             id="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#A1A1AA] ${
-              errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
+            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] ${
+              errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
             }`}
             placeholder="Enter first name"
           />
@@ -126,7 +127,7 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
         </div>
 
         <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+          <label htmlFor="lastName" className="block text-sm font-medium text-[#374151] mb-1.5">
             Last name
           </label>
           <input
@@ -134,8 +135,8 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
             id="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#A1A1AA] ${
-              errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
+            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] ${
+              errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
             }`}
             placeholder="Enter last name"
           />
@@ -145,30 +146,32 @@ export function AddReportModal({ isOpen, onClose, onSuccess }: AddReportModalPro
         </div>
 
         <div>
-          <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+          <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#374151] mb-1.5">
             Development goals (optional)
           </label>
-          <textarea
-            id="developmentGoals"
-            value={developmentGoals}
-            onChange={(e) => setDevelopmentGoals(e.target.value)}
-            rows={4}
-            className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#A1A1AA] resize-none ${
-              errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
-            }`}
-            placeholder="Enter development goals (markdown supported)"
-          />
+          <AiTextImprove value={developmentGoals} onChange={setDevelopmentGoals} context="development goals" maxLength={5000}>
+            <textarea
+              id="developmentGoals"
+              value={developmentGoals}
+              onChange={(e) => setDevelopmentGoals(e.target.value)}
+              rows={4}
+              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] resize-none ${
+                errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+              }`}
+              placeholder="Enter development goals (markdown supported)"
+            />
+          </AiTextImprove>
           <div className="flex justify-between mt-1">
             {errors.developmentGoals && (
               <p className="text-xs text-[#DC2626]">{errors.developmentGoals}</p>
             )}
-            <p className={`text-xs ml-auto ${developmentGoals.length > 5000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+            <p className={`text-xs ml-auto ${developmentGoals.length > 5000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
               {developmentGoals.length} / 5000
             </p>
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 pt-4 border-t border-[#F4F4F5]">
+        <div className="flex justify-end gap-2 pt-4 border-t border-[#F3F4F6]">
           <Button type="button" variant="secondary" onClick={handleClose}>
             Cancel
           </Button>

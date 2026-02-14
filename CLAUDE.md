@@ -18,6 +18,7 @@ src/
 │   │   ├── reports/       # Report CRUD
 │   │   ├── entries/       # Entry CRUD
 │   │   ├── backup/        # Backup/restore
+│   │   ├── ai/            # AI text improvement endpoint
 │   │   └── archived-goals/
 │   ├── cycles/[id]/       # Cycle detail page
 │   ├── reports/[id]/      # Report detail page
@@ -30,7 +31,9 @@ src/
     ├── cycles.ts
     ├── reports.ts
     ├── entries.ts
-    └── archived-goals.ts
+    ├── archived-goals.ts
+    ├── ai.ts               # N8N webhook callers (improveText, generateReportSummary)
+    └── report-summaries.ts # DB operations for AI summaries
 ```
 
 ## Environment Variables
@@ -39,6 +42,9 @@ DATABASE_URL=libsql://your-db.turso.io    # Turso database URL
 DATABASE_AUTH_TOKEN=your-token             # Turso auth token
 BASIC_AUTH_USER=username                   # Basic auth username
 BASIC_AUTH_PASS=password                   # Basic auth password
+N8N_IMPROVE_TEXT_WEBHOOK_URL=https://your-n8n-instance.com/webhook/tpd-improve-text
+N8N_REPORT_SUMMARY_WEBHOOK_URL=https://your-n8n-instance.com/webhook/tpd-report-summary
+N8N_WEBHOOK_AUTH_TOKEN=your-token         # Optional Bearer token for N8N webhooks
 ```
 
 ## Database
@@ -60,7 +66,7 @@ BASIC_AUTH_PASS=password                   # Basic auth password
 
 ## Testing
 - **Framework:** Vitest with mocked database operations
-- **Scope:** Library functions and API routes (107 tests)
+- **Scope:** Library functions and API routes (125 tests)
 - Tests are excluded from TypeScript build via `tsconfig.json`
 
 ### Test Commands
@@ -77,22 +83,28 @@ src/
 │   └── __tests__/
 │       ├── entries.test.ts
 │       ├── cycles.test.ts
-│       └── reports.test.ts
+│       ├── reports.test.ts
+│       ├── ai.test.ts
+│       └── report-summaries.test.ts
 └── app/api/
     ├── entries/__tests__/route.test.ts
     ├── cycles/__tests__/route.test.ts
-    └── reports/__tests__/route.test.ts
+    ├── reports/__tests__/route.test.ts
+    └── ai/__tests__/route.test.ts
 ```
 
 ## UI Components
 - **ScrollArea** - Custom scrollbar component using CSS (`.custom-scrollbar` class)
 - **EntryBadge** - Color-coded badges (green: Positive Feedback/Kudos, red: Constructive Feedback)
-- **MarkdownEditor** - Supports `fillHeight` prop for dynamic vertical sizing
+- **MarkdownEditor** - Supports `fillHeight` prop for dynamic vertical sizing; `aiContext` prop enables built-in AI text improvement
 - **ReportCard** - Rectangular cards with user icons in responsive grid layout
+- **InlineDiff** - Word-level diff renderer (green additions, red strikethrough removals) with Accept/Reject
+- **AiTextImprove** - Wrapper for plain textareas adding a sparkle button for AI text improvement
+- **ReportSummary** - Collapsible AI summary section on report detail page (per report+cycle)
 
 ## Responsive Layout
 - Report detail page uses two-column layout on wide screens (xl: 1280px+)
-- Left column (500px): Sticky sidebar with name and development goals
+- Left column (500px): Sticky sidebar with name, AI summary, and development goals
 - Right column: Scrollable entries list
 - Single column on smaller screens
 - Max page width: 1800px

@@ -67,7 +67,7 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
     <div className="fixed inset-0 z-[9999]">
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ease-out ${
+        className={`fixed inset-0 bg-[#111827]/40 backdrop-blur-[2px] transition-opacity duration-300 ease-out ${
           isAnimating ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={onClose}
@@ -75,17 +75,17 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
 
       {/* Drawer panel */}
       <div
-        className={`fixed inset-y-0 right-0 w-full ${widthClasses[width]} bg-white shadow-xl flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed inset-y-0 right-0 w-full ${widthClasses[width]} bg-white shadow-e4 flex flex-col transition-transform duration-300 ease-out ${
           isAnimating ? 'translate-x-0' : 'translate-x-full'
         }`}
         onTransitionEnd={handleTransitionEnd}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#F4F4F5] flex items-center justify-between flex-shrink-0">
-          <h2 className="text-base font-semibold text-[#18181B] tracking-tight">{title}</h2>
+        <div className="px-6 py-4 border-b border-[#F3F4F6] flex items-center justify-between flex-shrink-0">
+          <h2 className="text-base font-semibold text-[#111827] tracking-tight">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1.5 text-[#A1A1AA] hover:text-[#52525B] hover:bg-[#F4F4F5] rounded transition-colors"
+            className="p-2 text-[#9CA3AF] hover:text-[#4B5563] hover:bg-[#F3F4F6] rounded transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -128,26 +128,26 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
           </Button>
         </Link>
         <div className="flex items-center gap-2 flex-wrap">
-          <h1 className="text-lg font-semibold text-[#18181B] tracking-tight">{cycle.name}</h1>
-          <span className="px-2 py-0.5 rounded text-xs font-medium bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]">
+          <h1 className="text-lg font-semibold text-[#111827] tracking-tight">{cycle.name}</h1>
+          <span className="px-2 py-0.5 rounded text-xs font-medium bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]">
             Archived
           </span>
         </div>
       </div>
 
-      <p className="text-sm text-[#71717A] mb-6">
+      <p className="text-sm text-[#6B7280] mb-6">
         {formatDate(cycle.startDate)} – {cycle.endDate ? formatDate(cycle.endDate) : 'Present'}
       </p>
 
       {reports.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-md border border-[#E4E4E7]">
-          <p className="text-sm text-[#71717A]">No reports with entries in this cycle.</p>
+        <div className="text-center py-12 bg-white rounded-md border border-[#E5E7EB]">
+          <p className="text-sm text-[#6B7280]">No reports with entries in this cycle.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Reports List */}
           <div className="md:col-span-1">
-            <h2 className="text-xs font-semibold text-[#71717A] uppercase tracking-wide mb-3">
+            <h2 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wide mb-3">
               Reports
             </h2>
             <div className="flex md:flex-col gap-2 overflow-x-auto pb-2 md:pb-0">
@@ -158,7 +158,7 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                   className={`whitespace-nowrap text-left px-3 py-2 rounded-md transition-colors text-sm min-h-[40px] ${
                     selectedReportId === report.id
                       ? 'bg-[#F5F3FF] text-[#7C3AED] font-medium'
-                      : 'hover:bg-[#FAFAFA] text-[#52525B] bg-[#F4F4F5] md:bg-transparent'
+                      : 'hover:bg-[#F9FAFB] text-[#4B5563] bg-[#F3F4F6] md:bg-transparent'
                   }`}
                 >
                   {report.firstName} {report.lastName}
@@ -171,13 +171,13 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
           <div className="md:col-span-3">
             {selectedReport && (
               <>
-                <h2 className="text-base font-semibold text-[#18181B] tracking-tight mb-4">
+                <h2 className="text-base font-semibold text-[#111827] tracking-tight mb-4">
                   {selectedReport.firstName} {selectedReport.lastName}
                 </h2>
 
                 {/* Archived Goals */}
-                <div className="bg-white rounded-md border border-[#E4E4E7] p-4 mb-6">
-                  <h3 className="text-sm font-semibold text-[#18181B] tracking-tight mb-3">
+                <div className="bg-white rounded-md border border-[#E5E7EB] p-4 mb-6">
+                  <h3 className="text-sm font-semibold text-[#111827] tracking-tight mb-3">
                     Development Goals
                   </h3>
                   {(() => {
@@ -191,11 +191,11 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                               {goals.map((goal) => (
                                 <div
                                   key={goal.id}
-                                  className="border-b border-[#F4F4F5] pb-3 last:border-0 last:pb-0"
+                                  className="border-b border-[#F3F4F6] pb-3 last:border-0 last:pb-0"
                                 >
-                                  <h4 className="font-medium text-sm text-[#18181B]">{goal.title}</h4>
+                                  <h4 className="font-medium text-sm text-[#111827]">{goal.title}</h4>
                                   {goal.description && (
-                                    <MarkdownContent className="mt-1 text-[#52525B]">
+                                    <MarkdownContent className="mt-1 text-[#4B5563]">
                                       {goal.description}
                                     </MarkdownContent>
                                   )}
@@ -211,13 +211,13 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                     // Fall back to legacy text field
                     if (archivedGoals?.developmentGoals) {
                       return (
-                        <MarkdownContent className="text-[#3F3F46]">
+                        <MarkdownContent className="text-[#374151]">
                           {archivedGoals.developmentGoals}
                         </MarkdownContent>
                       );
                     }
                     return (
-                      <p className="text-sm text-[#71717A] italic">
+                      <p className="text-sm text-[#6B7280] italic">
                         No development goals were set for this cycle.
                       </p>
                     );
@@ -227,11 +227,11 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                 {/* Entries */}
                 <div className="space-y-4">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                    <h3 className="text-sm font-semibold text-[#18181B] tracking-tight">Entries</h3>
+                    <h3 className="text-sm font-semibold text-[#111827] tracking-tight">Entries</h3>
                     <select
                       value={filter}
                       onChange={(e) => setFilter(e.target.value as EntryType | 'all')}
-                      className="px-3 py-1.5 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[36px]"
+                      className="px-3 py-1.5 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[36px]"
                     >
                       {ENTRY_TYPE_OPTIONS.map(option => (
                         <option key={option.value} value={option.value}>
@@ -239,14 +239,14 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
                         </option>
                       ))}
                     </select>
-                    <span className="text-xs text-[#71717A]">
+                    <span className="text-xs text-[#6B7280]">
                       {filteredEntries.length} {filteredEntries.length === 1 ? 'entry' : 'entries'}
                     </span>
                   </div>
 
                   {filteredEntries.length === 0 ? (
-                    <div className="text-center py-8 bg-white rounded-md border border-[#E4E4E7]">
-                      <p className="text-sm text-[#71717A]">
+                    <div className="text-center py-8 bg-white rounded-md border border-[#E5E7EB]">
+                      <p className="text-sm text-[#6B7280]">
                         {filter === 'all'
                           ? 'No entries for this report in this cycle.'
                           : `No ${ENTRY_TYPE_OPTIONS.find(o => o.value === filter)?.label.toLowerCase()} entries.`}

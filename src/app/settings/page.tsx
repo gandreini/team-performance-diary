@@ -205,21 +205,21 @@ export default function SettingsPage() {
 
   return (
     <div>
-      <h1 className="text-lg font-semibold text-[#18181B] tracking-tight mb-6">Settings</h1>
+      <h1 className="text-lg font-semibold text-[#111827] tracking-tight mb-6">Settings</h1>
 
       {/* Current Cycle Section */}
-      <div className="bg-white rounded-md border border-[#E4E4E7] p-5 mb-6">
-        <h2 className="text-base font-semibold text-[#18181B] tracking-tight mb-4">Current Cycle</h2>
+      <div className="bg-white rounded-md border border-[#E5E7EB] p-5 mb-6">
+        <h2 className="text-base font-semibold text-[#111827] tracking-tight mb-4">Current Cycle</h2>
 
         {activeCycle ? (
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-base font-medium text-[#18181B]">{activeCycle.name}</span>
+              <span className="text-base font-medium text-[#111827]">{activeCycle.name}</span>
               <span className="px-2 py-0.5 rounded text-xs font-medium bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]">
                 Active
               </span>
             </div>
-            <p className="text-sm text-[#71717A]">
+            <p className="text-sm text-[#6B7280]">
               Started: {formatDate(activeCycle.startDate)}
             </p>
             <div className="pt-3">
@@ -230,35 +230,35 @@ export default function SettingsPage() {
           </div>
         ) : (
           <div className="text-center py-8">
-            <p className="text-sm text-[#52525B] mb-4">No active cycle found.</p>
+            <p className="text-sm text-[#4B5563] mb-4">No active cycle found.</p>
             <Button onClick={fetchData}>Create Cycle</Button>
           </div>
         )}
       </div>
 
       {/* Archived Cycles Section */}
-      <div className="bg-white rounded-md border border-[#E4E4E7] p-5 mb-6">
-        <h2 className="text-base font-semibold text-[#18181B] tracking-tight mb-4">Archived Cycles</h2>
+      <div className="bg-white rounded-md border border-[#E5E7EB] p-5 mb-6">
+        <h2 className="text-base font-semibold text-[#111827] tracking-tight mb-4">Archived Cycles</h2>
 
         {archivedCycles.length === 0 ? (
-          <p className="text-sm text-[#71717A] italic">No archived cycles yet</p>
+          <p className="text-sm text-[#6B7280] italic">No archived cycles yet</p>
         ) : (
           <div className="space-y-2">
             {archivedCycles.map((cycle) => (
               <Link
                 key={cycle.id}
                 href={`/cycles/${cycle.id}`}
-                className="block p-3 border border-[#E4E4E7] rounded-md hover:border-[#D4D4D8] hover:bg-[#FAFAFA] transition-all group"
+                className="block p-3 border border-[#E5E7EB] rounded-md hover:border-[#D1D5DB] hover:bg-[#F9FAFB] transition-all group"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-sm font-medium text-[#18181B]">{cycle.name}</span>
-                    <p className="text-xs text-[#71717A] mt-0.5">
+                    <span className="text-sm font-medium text-[#111827]">{cycle.name}</span>
+                    <p className="text-xs text-[#6B7280] mt-0.5">
                       {formatDate(cycle.startDate)} – {cycle.endDate ? formatDate(cycle.endDate) : 'Present'}
                     </p>
                   </div>
                   <svg
-                    className="w-4 h-4 text-[#A1A1AA] group-hover:text-[#71717A] transition-colors"
+                    className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#6B7280] transition-colors"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -278,9 +278,9 @@ export default function SettingsPage() {
       </div>
 
       {/* Data Backup Section */}
-      <div className="bg-white rounded-md border border-[#E4E4E7] p-5">
-        <h2 className="text-base font-semibold text-[#18181B] tracking-tight mb-2">Data Backup</h2>
-        <p className="text-sm text-[#71717A] mb-4">
+      <div className="bg-white rounded-md border border-[#E5E7EB] p-5">
+        <h2 className="text-base font-semibold text-[#111827] tracking-tight mb-2">Data Backup</h2>
+        <p className="text-sm text-[#6B7280] mb-4">
           Download a backup of all your data or restore from a previous backup.
         </p>
 
@@ -307,8 +307,8 @@ export default function SettingsPage() {
           </Button>
         </div>
 
-        <div className="mt-4 p-3 bg-[#F4F4F5] rounded-md">
-          <p className="text-xs text-[#52525B]">
+        <div className="mt-4 p-3 bg-[#F3F4F6] rounded-md">
+          <p className="text-xs text-[#4B5563]">
             <strong>Tip:</strong> Download a backup regularly and save it to a safe location (iCloud, Dropbox, Google Drive, etc.) to protect your data.
           </p>
         </div>
@@ -328,7 +328,7 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label htmlFor="newCycleName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+            <label htmlFor="newCycleName" className="block text-sm font-medium text-[#374151] mb-1.5">
               New cycle name
             </label>
             <input
@@ -339,8 +339,8 @@ export default function SettingsPage() {
                 setNewCycleName(e.target.value);
                 setArchiveError('');
               }}
-              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#A1A1AA] ${
-                archiveError ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E4E4E7] focus:border-[#8B5CF6]'
+              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] ${
+                archiveError ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
               }`}
               placeholder="e.g., H1 2025, Q2 Review"
             />
@@ -349,7 +349,7 @@ export default function SettingsPage() {
             )}
           </div>
 
-          <div className="flex justify-end gap-2 pt-4 border-t border-[#F4F4F5]">
+          <div className="flex justify-end gap-2 pt-4 border-t border-[#F3F4F6]">
             <Button variant="secondary" onClick={handleCloseArchiveModal}>
               Cancel
             </Button>
@@ -379,17 +379,17 @@ export default function SettingsPage() {
           </div>
 
           {selectedFile && (
-            <div className="p-3 bg-[#F4F4F5] rounded-md">
-              <p className="text-sm text-[#52525B]">
+            <div className="p-3 bg-[#F3F4F6] rounded-md">
+              <p className="text-sm text-[#4B5563]">
                 <strong>File:</strong> {selectedFile.name}
               </p>
-              <p className="text-xs text-[#71717A] mt-1">
+              <p className="text-xs text-[#6B7280] mt-1">
                 Size: {(selectedFile.size / 1024).toFixed(1)} KB
               </p>
             </div>
           )}
 
-          <div className="flex justify-end gap-2 pt-4 border-t border-[#F4F4F5]">
+          <div className="flex justify-end gap-2 pt-4 border-t border-[#F3F4F6]">
             <Button variant="secondary" onClick={handleCloseRestoreModal}>
               Cancel
             </Button>

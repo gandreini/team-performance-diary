@@ -35,17 +35,17 @@ export function Dropdown({ trigger, options, onSelect }: DropdownProps) {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <div onClick={() => setIsOpen(!isOpen)}>
+      <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer transition-opacity duration-150">
         {trigger}
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 mt-1 w-56 bg-white rounded-md border border-[#E4E4E7] shadow-lg z-50 py-1">
+        <div className="absolute right-0 mt-1 w-56 bg-white rounded-md border border-[#E5E7EB] shadow-e3 z-50 py-1">
           {options.map((option) => (
             <button
               key={option.value}
               onClick={() => handleSelect(option.value)}
-              className="w-full text-left px-3 py-2 text-sm text-[#3F3F46] hover:bg-[#F4F4F5] transition-colors"
+              className="w-full text-left px-3 py-2 text-sm text-[#374151] hover:bg-[#F3F4F6] transition-colors"
             >
               {option.label}
             </button>

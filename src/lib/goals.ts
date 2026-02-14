@@ -132,3 +132,21 @@ export async function getGoalIdsForEntry(entryId: string): Promise<string[]> {
     .where(eq(entryGoals.entryId, entryId));
   return links.map(l => l.goalId);
 }
+
+// Get all entry-goal links for multiple entries in one query
+export async function getGoalLinksForEntries(entryIds: string[]): Promise<Map<string, string[]>> {
+  if (entryIds.length === 0) return new Map();
+
+  const links = await db
+    .select()
+    .from(entryGoals)
+    .where(inArray(entryGoals.entryId, entryIds));
+
+  const map = new Map<string, string[]>();
+  for (const link of links) {
+    const existing = map.get(link.entryId) || [];
+    existing.push(link.goalId);
+    map.set(link.entryId, existing);
+  }
+  return map;
+}

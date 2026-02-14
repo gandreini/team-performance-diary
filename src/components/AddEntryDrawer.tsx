@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Drawer } from './Drawer';
 import { Button } from './Button';
 import { MarkdownEditor } from './MarkdownEditor';
+import { AiTextImprove } from './AiTextImprove';
 import { GoalLinkSelector } from './GoalLinkSelector';
 import { useToast } from './Toast';
 import type { EntryType, FeedbackType, Entry } from '@/db';
@@ -211,13 +212,13 @@ export function AddEntryDrawer({
     return `${isEditing ? 'Edit' : 'Add'} ${typeLabel}`;
   };
 
-  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#A1A1AA]";
-  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#A1A1AA] resize-none";
+  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF]";
+  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF] resize-none";
 
   const renderFeedbackForm = () => (
-    <div className="flex flex-col h-full gap-5">
+    <div className="flex flex-col h-full gap-6">
       <div className="flex-shrink-0">
-        <label className="block text-sm font-medium text-[#3F3F46] mb-2">Feedback Type</label>
+        <label className="block text-sm font-medium text-[#374151] mb-2">Feedback Type</label>
         <div className="flex gap-4">
           <label className="flex items-center cursor-pointer">
             <input
@@ -226,9 +227,9 @@ export function AddEntryDrawer({
               value="positive"
               checked={feedbackType === 'positive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D4D4D8]"
+              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
             />
-            <span className="ml-2 text-sm text-[#3F3F46]">Positive</span>
+            <span className="ml-2 text-sm text-[#374151]">Positive</span>
           </label>
           <label className="flex items-center cursor-pointer">
             <input
@@ -237,72 +238,78 @@ export function AddEntryDrawer({
               value="constructive"
               checked={feedbackType === 'constructive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D4D4D8]"
+              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
             />
-            <span className="ml-2 text-sm text-[#3F3F46]">Constructive</span>
+            <span className="ml-2 text-sm text-[#374151]">Constructive</span>
           </label>
         </div>
       </div>
 
       <div className="flex-shrink-0">
-        <label htmlFor="situation" className="block text-sm font-medium text-[#3F3F46] mb-1">
+        <label htmlFor="situation" className="block text-sm font-medium text-[#374151] mb-1">
           Situation
         </label>
-        <p className="text-xs text-[#71717A] mb-1.5">
+        <p className="text-xs text-[#6B7280] mb-1.5">
           Describe the specific context—when and where this occurred
         </p>
-        <textarea
-          id="situation"
-          value={situation}
-          onChange={(e) => { setSituation(e.target.value); setHasChanges(true); }}
-          rows={4}
-          className={textareaClassName}
-        />
-        <p className={`text-xs mt-1 text-right ${situation.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <AiTextImprove value={situation} onChange={(v) => { setSituation(v); setHasChanges(true); }} context="feedback situation" maxLength={1000}>
+          <textarea
+            id="situation"
+            value={situation}
+            onChange={(e) => { setSituation(e.target.value); setHasChanges(true); }}
+            rows={4}
+            className={textareaClassName}
+          />
+        </AiTextImprove>
+        <p className={`text-xs mt-1 text-right ${situation.length > 1000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {situation.length} / 1000
         </p>
       </div>
 
       <div className="flex-shrink-0">
-        <label htmlFor="behavior" className="block text-sm font-medium text-[#3F3F46] mb-1">
+        <label htmlFor="behavior" className="block text-sm font-medium text-[#374151] mb-1">
           Behavior
         </label>
-        <p className="text-xs text-[#71717A] mb-1.5">
+        <p className="text-xs text-[#6B7280] mb-1.5">
           Describe the specific, observable action (not your interpretation)
         </p>
-        <textarea
-          id="behavior"
-          value={behavior}
-          onChange={(e) => { setBehavior(e.target.value); setHasChanges(true); }}
-          rows={4}
-          className={textareaClassName}
-        />
-        <p className={`text-xs mt-1 text-right ${behavior.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <AiTextImprove value={behavior} onChange={(v) => { setBehavior(v); setHasChanges(true); }} context="feedback behavior observation" maxLength={1000}>
+          <textarea
+            id="behavior"
+            value={behavior}
+            onChange={(e) => { setBehavior(e.target.value); setHasChanges(true); }}
+            rows={4}
+            className={textareaClassName}
+          />
+        </AiTextImprove>
+        <p className={`text-xs mt-1 text-right ${behavior.length > 1000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {behavior.length} / 1000
         </p>
       </div>
 
       <div className="flex-shrink-0">
-        <label htmlFor="impact" className="block text-sm font-medium text-[#3F3F46] mb-1">
+        <label htmlFor="impact" className="block text-sm font-medium text-[#374151] mb-1">
           Impact
         </label>
-        <p className="text-xs text-[#71717A] mb-1.5">
+        <p className="text-xs text-[#6B7280] mb-1.5">
           Describe the effect on you, the team, or outcomes
         </p>
-        <textarea
-          id="impact"
-          value={impact}
-          onChange={(e) => { setImpact(e.target.value); setHasChanges(true); }}
-          rows={4}
-          className={textareaClassName}
-        />
-        <p className={`text-xs mt-1 text-right ${impact.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <AiTextImprove value={impact} onChange={(v) => { setImpact(v); setHasChanges(true); }} context="feedback impact description" maxLength={1000}>
+          <textarea
+            id="impact"
+            value={impact}
+            onChange={(e) => { setImpact(e.target.value); setHasChanges(true); }}
+            rows={4}
+            className={textareaClassName}
+          />
+        </AiTextImprove>
+        <p className={`text-xs mt-1 text-right ${impact.length > 1000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {impact.length} / 1000
         </p>
       </div>
 
       <div className="flex-1 flex flex-col min-h-0">
-        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
+        <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Additional notes (optional)
         </label>
         <MarkdownEditor
@@ -310,15 +317,16 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={2000}
           fillHeight
+          aiContext="feedback additional notes"
         />
       </div>
     </div>
   );
 
   const renderKudosForm = () => (
-    <div className="flex flex-col h-full gap-5">
+    <div className="flex flex-col h-full gap-6">
       <div className="flex-shrink-0">
-        <label htmlFor="link" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+        <label htmlFor="link" className="block text-sm font-medium text-[#374151] mb-1.5">
           Link to kudos (optional)
         </label>
         <input
@@ -335,7 +343,7 @@ export function AddEntryDrawer({
       </div>
 
       <div className="flex-1 flex flex-col min-h-0">
-        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
+        <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Describe the kudos
         </label>
         <MarkdownEditor
@@ -343,15 +351,16 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
           fillHeight
+          aiContext="kudos description"
         />
       </div>
     </div>
   );
 
   const renderThirdPartyFeedbackForm = () => (
-    <div className="flex flex-col h-full gap-5">
+    <div className="flex flex-col h-full gap-6">
       <div className="flex-shrink-0">
-        <label htmlFor="providerName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+        <label htmlFor="providerName" className="block text-sm font-medium text-[#374151] mb-1.5">
           Who provided this feedback?
         </label>
         <input
@@ -361,13 +370,13 @@ export function AddEntryDrawer({
           onChange={(e) => { setProviderName(e.target.value); setHasChanges(true); }}
           className={inputClassName}
         />
-        <p className={`text-xs mt-1 text-right ${providerName.trim().length > 100 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${providerName.trim().length > 100 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {providerName.trim().length} / 100
         </p>
       </div>
 
       <div className="flex-1 flex flex-col min-h-0">
-        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
+        <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Feedback content
         </label>
         <MarkdownEditor
@@ -375,14 +384,15 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
           fillHeight
+          aiContext="third-party feedback content"
         />
       </div>
     </div>
   );
 
-  const renderSimpleForm = (label: string) => (
+  const renderSimpleForm = (label: string, context: string) => (
     <div className="flex flex-col h-full">
-      <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
+      <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
         {label}
       </label>
       <MarkdownEditor
@@ -390,14 +400,15 @@ export function AddEntryDrawer({
         onChange={(value) => { setNotes(value); setHasChanges(true); }}
         maxLength={5000}
         fillHeight
+        aiContext={context}
       />
     </div>
   );
 
   const renderAccomplishmentForm = () => (
-    <div className="flex flex-col h-full gap-5">
+    <div className="flex flex-col h-full gap-6">
       <div className="flex-shrink-0">
-        <label htmlFor="title" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+        <label htmlFor="title" className="block text-sm font-medium text-[#374151] mb-1.5">
           Title (optional)
         </label>
         <input
@@ -408,13 +419,13 @@ export function AddEntryDrawer({
           className={inputClassName}
           placeholder="Brief title for this accomplishment"
         />
-        <p className={`text-xs mt-1 text-right ${title.length > 200 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${title.length > 200 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {title.length} / 200
         </p>
       </div>
 
       <div className="flex-1 flex flex-col min-h-0">
-        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
+        <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           What did they accomplish?
         </label>
         <MarkdownEditor
@@ -422,6 +433,7 @@ export function AddEntryDrawer({
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
           fillHeight
+          aiContext="accomplishment description"
         />
       </div>
     </div>
@@ -438,9 +450,9 @@ export function AddEntryDrawer({
       case 'accomplishment':
         return renderAccomplishmentForm();
       case 'notes':
-        return renderSimpleForm('Note');
+        return renderSimpleForm('Note', 'performance note');
       case 'career_conversation':
-        return renderSimpleForm('Conversation notes');
+        return renderSimpleForm('Conversation notes', 'career conversation notes');
       default:
         return null;
     }
@@ -455,8 +467,8 @@ export function AddEntryDrawer({
 
         {/* Goal Linking - Only shown when editing */}
         {isEditing && (
-          <div className="pt-5 mt-5 border-t border-[#F4F4F5] flex-shrink-0">
-            <label className="block text-sm font-medium text-[#3F3F46] mb-2">
+          <div className="pt-5 mt-5 border-t border-[#F3F4F6] flex-shrink-0">
+            <label className="block text-sm font-medium text-[#374151] mb-2">
               Link to Development Goals
             </label>
             <GoalLinkSelector
@@ -467,7 +479,7 @@ export function AddEntryDrawer({
           </div>
         )}
 
-        <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F4F4F5] flex-shrink-0">
+        <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F3F4F6] flex-shrink-0">
           <Button type="button" variant="secondary" onClick={handleClose}>
             Cancel
           </Button>

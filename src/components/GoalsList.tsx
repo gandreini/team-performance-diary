@@ -124,7 +124,7 @@ export function GoalsList({
     return (
         <div>
             {goals.length === 0 ? (
-                <p className="text-sm text-[#71717A] italic">
+                <p className="text-sm text-[#6B7280] italic">
                     {readOnly
                         ? "No development goals set."
                         : "No development goals set. Add one to get started."}
@@ -134,17 +134,17 @@ export function GoalsList({
                     {goals.map((goal) => (
                         <div
                             key={goal.id}
-                            className="border-b border-[#F4F4F5] pb-0 last:border-0"
+                            className="border-b border-[#F3F4F6] pb-0 last:border-0"
                         >
                             <div className="flex items-start justify-between gap-2">
-                                <h4 className="font-medium text-sm text-[#18181B]">
+                                <h4 className="font-medium text-sm text-[#111827]">
                                     {goal.title}
                                 </h4>
                                 {!readOnly && (
                                     <div className="flex gap-0.5 flex-shrink-0">
                                         <button
                                             onClick={() => handleOpenEdit(goal)}
-                                            className="p-1.5 text-[#A1A1AA] hover:text-[#52525B] hover:bg-[#F4F4F5] rounded transition-colors"
+                                            className="p-1.5 text-[#9CA3AF] hover:text-[#4B5563] hover:bg-[#F3F4F6] rounded transition-colors"
                                             aria-label="Edit goal"
                                         >
                                             <svg
@@ -165,7 +165,7 @@ export function GoalsList({
                                             onClick={() =>
                                                 setDeletingGoal(goal)
                                             }
-                                            className="p-1.5 text-[#A1A1AA] hover:text-[#DC2626] hover:bg-[#FEF2F2] rounded transition-colors"
+                                            className="p-1.5 text-[#9CA3AF] hover:text-[#DC2626] hover:bg-[#FEF2F2] rounded transition-colors"
                                             aria-label="Delete goal"
                                         >
                                             <svg
@@ -186,7 +186,7 @@ export function GoalsList({
                                 )}
                             </div>
                             {goal.description && (
-                                <MarkdownContent className="mt-1 text-[#52525B]">
+                                <MarkdownContent className="mt-1 text-[#4B5563]">
                                     {goal.description}
                                 </MarkdownContent>
                             )}
@@ -197,7 +197,7 @@ export function GoalsList({
 
             {!readOnly && (
                 <>
-                    <div className="border-t border-[#F4F4F5] mt-3 pt-3">
+                    <div className="border-t border-[#F3F4F6] mt-3 pt-3">
                         <button
                             onClick={handleOpenAdd}
                             className="flex items-center gap-1 text-xs font-medium text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
@@ -230,14 +230,14 @@ export function GoalsList({
             >
                 <div className="flex flex-col h-full">
                     <div className="flex-shrink-0 mb-5">
-                        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+                        <label className="block text-sm font-medium text-[#374151] mb-1.5">
                             Title <span className="text-[#DC2626]">*</span>
                         </label>
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="w-full px-3 py-2 border border-[#E4E4E7] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#18181B] focus:border-[#18181B] transition-colors"
+                            className="w-full px-3 py-2 border border-[#E5E7EB] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#111827] focus:border-[#111827] transition-colors"
                             placeholder="e.g., Improve communication skills"
                             maxLength={200}
                         />
@@ -245,14 +245,14 @@ export function GoalsList({
                             className={`text-xs mt-1 text-right ${
                                 title.length > 200
                                     ? "text-[#DC2626]"
-                                    : "text-[#71717A]"
+                                    : "text-[#6B7280]"
                             }`}
                         >
                             {title.length} / 200
                         </p>
                     </div>
                     <div className="flex-1 flex flex-col min-h-0">
-                        <label className="block text-sm font-medium text-[#3F3F46] mb-1.5 flex-shrink-0">
+                        <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
                             Description
                         </label>
                         <MarkdownEditor
@@ -261,9 +261,10 @@ export function GoalsList({
                             maxLength={2000}
                             placeholder="Add details about this goal..."
                             fillHeight
+                            aiContext="development goal description"
                         />
                     </div>
-                    <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F4F4F5] flex-shrink-0">
+                    <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F3F4F6] flex-shrink-0">
                         <Button variant="secondary" onClick={handleCloseModal}>
                             Cancel
                         </Button>
@@ -286,23 +287,23 @@ export function GoalsList({
                 role="alertdialog"
             >
                 <div className="space-y-4">
-                    <p className="text-sm text-[#52525B]">
+                    <p className="text-sm text-[#4B5563]">
                         Are you sure you want to delete this goal? This action
                         cannot be undone.
                     </p>
                     {deletingGoal && (
-                        <div className="p-3 bg-[#FAFAFA] rounded-md border border-[#F4F4F5]">
-                            <p className="font-medium text-sm text-[#18181B]">
+                        <div className="p-3 bg-[#F9FAFB] rounded-md border border-[#F3F4F6]">
+                            <p className="font-medium text-sm text-[#111827]">
                                 {deletingGoal.title}
                             </p>
                             {deletingGoal.description && (
-                                <p className="mt-1 text-sm text-[#52525B] line-clamp-2">
+                                <p className="mt-1 text-sm text-[#4B5563] line-clamp-2">
                                     {deletingGoal.description}
                                 </p>
                             )}
                         </div>
                     )}
-                    <div className="flex justify-end gap-2 pt-4 border-t border-[#F4F4F5]">
+                    <div className="flex justify-end gap-2 pt-4 border-t border-[#F3F4F6]">
                         <Button
                             variant="secondary"
                             onClick={() => setDeletingGoal(null)}

@@ -1,20 +1,21 @@
 import { NextResponse } from 'next/server';
-import { db, cycles, reports, entries, archivedGoals, developmentGoals, entryGoals } from '@/db';
+import { db, cycles, reports, entries, archivedGoals, developmentGoals, entryGoals, reportSummaries } from '@/db';
 
 export async function GET() {
   try {
     // Export all data from all tables
-    const [allCycles, allReports, allEntries, allArchivedGoals, allDevelopmentGoals, allEntryGoals] = await Promise.all([
+    const [allCycles, allReports, allEntries, allArchivedGoals, allDevelopmentGoals, allEntryGoals, allReportSummaries] = await Promise.all([
       db.select().from(cycles),
       db.select().from(reports),
       db.select().from(entries),
       db.select().from(archivedGoals),
       db.select().from(developmentGoals),
       db.select().from(entryGoals),
+      db.select().from(reportSummaries),
     ]);
 
     const backup = {
-      version: 2, // Incremented to indicate new tables
+      version: 3, // Incremented to indicate report_summaries table
       exportedAt: new Date().toISOString(),
       data: {
         cycles: allCycles,
@@ -23,6 +24,7 @@ export async function GET() {
         archivedGoals: allArchivedGoals,
         developmentGoals: allDevelopmentGoals,
         entryGoals: allEntryGoals,
+        reportSummaries: allReportSummaries,
       },
     };
 
