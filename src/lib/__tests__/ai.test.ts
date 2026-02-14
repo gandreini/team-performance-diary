@@ -17,11 +17,10 @@ describe('ai lib', () => {
   });
 
   describe('improveText', () => {
-    it('should call N8N webhook and return improved text', async () => {
-      const mockResponse = { improved_text: 'Better text here' };
+    it('should handle JSON response with improved_text field', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockResponse),
+        text: () => Promise.resolve(JSON.stringify({ improved_text: 'Better text here' })),
       });
 
       const { improveText } = await import('../ai');
@@ -41,10 +40,21 @@ describe('ai lib', () => {
       expect(result).toBe('Better text here');
     });
 
+    it('should handle plain text response', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve('Improved text directly'),
+      });
+
+      const { improveText } = await import('../ai');
+      const result = await improveText('Some text', 'ctx');
+
+      expect(result).toBe('Improved text directly');
+    });
+
     it('should throw if webhook URL is not configured', async () => {
       delete process.env.N8N_IMPROVE_TEXT_WEBHOOK_URL;
 
-      // Re-import to pick up env change
       vi.resetModules();
       const { improveText } = await import('../ai');
 
@@ -67,10 +77,10 @@ describe('ai lib', () => {
       );
     });
 
-    it('should throw on invalid response shape', async () => {
+    it('should throw on invalid JSON response shape', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve({ wrong_field: 'value' }),
+        text: () => Promise.resolve(JSON.stringify({ wrong_field: 'value' })),
       });
 
       const { improveText } = await import('../ai');
@@ -80,12 +90,25 @@ describe('ai lib', () => {
       );
     });
 
+    it('should throw on empty plain text response', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve('   '),
+      });
+
+      const { improveText } = await import('../ai');
+
+      await expect(improveText('text', 'ctx')).rejects.toThrow(
+        'Invalid response from AI service: empty text'
+      );
+    });
+
     it('should send request without auth header when no token configured', async () => {
       delete process.env.N8N_WEBHOOK_AUTH_TOKEN;
 
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve({ improved_text: 'improved' }),
+        text: () => Promise.resolve(JSON.stringify({ improved_text: 'improved' })),
       });
 
       vi.resetModules();
@@ -98,11 +121,10 @@ describe('ai lib', () => {
   });
 
   describe('generateReportSummary', () => {
-    it('should call N8N webhook with structured payload', async () => {
-      const mockResponse = { summary: '## Summary\nThings are going well.' };
+    it('should handle JSON response with summary field', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockResponse),
+        text: () => Promise.resolve(JSON.stringify({ summary: '## Summary\nThings are going well.' })),
       });
 
       const { generateReportSummary } = await import('../ai');
@@ -133,6 +155,30 @@ describe('ai lib', () => {
         })
       );
       expect(result).toBe('## Summary\nThings are going well.');
+    });
+
+    it('should handle plain text response (markdown)', async () => {
+      const markdown = '**Overall Performance**\n\nRob is doing great.';
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve(markdown),
+      });
+
+      const { generateReportSummary } = await import('../ai');
+      const result = await generateReportSummary({
+        report: { firstName: 'Rob', lastName: 'S' },
+        goals: [],
+        entries: [{
+          entryType: 'feedback',
+          feedbackType: 'positive',
+          feedbackGiven: true,
+          situation: null, behavior: null, impact: null,
+          title: null, notes: null, providerName: null,
+          linkedGoals: [],
+        }],
+      });
+
+      expect(result).toBe(markdown);
     });
 
     it('should throw if webhook URL is not configured', async () => {

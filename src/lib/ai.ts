@@ -27,7 +27,7 @@ export interface ReportSummaryPayload {
   entries: ReportSummaryEntry[];
 }
 
-async function callN8nWebhook<T>(url: string, body: unknown): Promise<T> {
+async function callN8nWebhook(url: string, body: unknown): Promise<string | Record<string, unknown>> {
   const authToken = process.env.N8N_WEBHOOK_AUTH_TOKEN;
 
   const controller = new AbortController();
@@ -52,8 +52,14 @@ async function callN8nWebhook<T>(url: string, body: unknown): Promise<T> {
       throw new Error(`N8N webhook returned ${response.status}: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    return data as T;
+    const text = await response.text();
+
+    // Try parsing as JSON first, fall back to plain text
+    try {
+      return JSON.parse(text) as Record<string, unknown>;
+    } catch {
+      return text;
+    }
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
       throw new Error('AI service request timed out. Please try again.');
@@ -70,13 +76,23 @@ export async function improveText(text: string, context: string): Promise<string
     throw new Error('N8N_IMPROVE_TEXT_WEBHOOK_URL is not configured');
   }
 
-  const result = await callN8nWebhook<ImproveTextResponse>(url, { text, context });
+  const result = await callN8nWebhook(url, { text, context });
 
-  if (!result.improved_text || typeof result.improved_text !== 'string') {
+  // Handle plain text response
+  if (typeof result === 'string') {
+    if (!result.trim()) {
+      throw new Error('Invalid response from AI service: empty text');
+    }
+    return result.trim();
+  }
+
+  // Handle JSON response: { improved_text: "..." }
+  const improved = (result as ImproveTextResponse).improved_text;
+  if (!improved || typeof improved !== 'string') {
     throw new Error('Invalid response from AI service: missing improved_text');
   }
 
-  return result.improved_text;
+  return improved;
 }
 
 export async function generateReportSummary(payload: ReportSummaryPayload): Promise<string> {
@@ -85,11 +101,21 @@ export async function generateReportSummary(payload: ReportSummaryPayload): Prom
     throw new Error('N8N_REPORT_SUMMARY_WEBHOOK_URL is not configured');
   }
 
-  const result = await callN8nWebhook<ReportSummaryResponse>(url, payload);
+  const result = await callN8nWebhook(url, payload);
 
-  if (!result.summary || typeof result.summary !== 'string') {
+  // Handle plain text response
+  if (typeof result === 'string') {
+    if (!result.trim()) {
+      throw new Error('Invalid response from AI service: empty summary');
+    }
+    return result.trim();
+  }
+
+  // Handle JSON response: { summary: "..." }
+  const summary = (result as ReportSummaryResponse).summary;
+  if (!summary || typeof summary !== 'string') {
     throw new Error('Invalid response from AI service: missing summary');
   }
 
-  return result.summary;
+  return summary;
 }
