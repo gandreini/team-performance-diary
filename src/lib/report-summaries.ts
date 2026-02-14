@@ -25,33 +25,31 @@ export async function upsertSummary(
   content: string
 ): Promise<ReportSummary> {
   const now = new Date().toISOString();
-  const existing = await getSummary(reportId, cycleId);
+  const id = uuidv4();
 
-  if (existing) {
-    await db
-      .update(reportSummaries)
-      .set({
+  await db
+    .insert(reportSummaries)
+    .values({
+      id,
+      reportId,
+      cycleId,
+      content,
+      generatedAt: now,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .onConflictDoUpdate({
+      target: [reportSummaries.reportId, reportSummaries.cycleId],
+      set: {
         content,
         generatedAt: now,
         updatedAt: now,
-      })
-      .where(eq(reportSummaries.id, existing.id));
+      },
+    });
 
-    return { ...existing, content, generatedAt: now, updatedAt: now };
-  }
-
-  const newSummary: ReportSummary = {
-    id: uuidv4(),
-    reportId,
-    cycleId,
-    content,
-    generatedAt: now,
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  await db.insert(reportSummaries).values(newSummary);
-  return newSummary;
+  // Return the current row (either newly inserted or updated)
+  const result = await getSummary(reportId, cycleId);
+  return result!;
 }
 
 export async function deleteSummariesByReport(reportId: string): Promise<void> {

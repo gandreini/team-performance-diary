@@ -20,13 +20,13 @@ export function EntryBadge({ entryType, feedbackType }: EntryBadgeProps) {
       case 'kudos':
         return { label: 'Kudos', color: 'bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]' };
       case 'notes':
-        return { label: 'Note', color: 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]' };
+        return { label: 'Note', color: 'bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]' };
       case 'career_conversation':
         return { label: 'Career', color: 'bg-[#F5F3FF] text-[#7C3AED] border border-[#DDD6FE]' };
       case 'third_party_feedback':
         return { label: '3rd Party', color: 'bg-[#FFF7ED] text-[#EA580C] border border-[#FDBA74]' };
       default:
-        return { label: 'Entry', color: 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]' };
+        return { label: 'Entry', color: 'bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]' };
     }
   };
 

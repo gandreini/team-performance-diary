@@ -25,6 +25,9 @@ vi.mock('@/db', () => ({
   archivedGoals: {
     reportId: 'report_id',
   },
+  reportSummaries: {
+    reportId: 'report_id',
+  },
 }));
 
 vi.mock('uuid', () => ({
@@ -277,7 +280,7 @@ describe('reports lib', () => {
 
       expect(result).toBe(true);
       // Should delete from all related tables
-      expect(mockDelete).toHaveBeenCalledTimes(3); // archivedGoals, entries, reports
+      expect(mockDelete).toHaveBeenCalledTimes(4); // reportSummaries, archivedGoals, entries, reports
     });
 
     it('should return false when report does not exist', async () => {

@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useAiTextImprove } from '@/hooks/useAiTextImprove';
 import { InlineDiff } from './InlineDiff';
-
-type AiState = 'idle' | 'loading' | 'diff';
 
 interface AiTextImproveProps {
   value: string;
@@ -20,50 +18,17 @@ export function AiTextImprove({
   maxLength,
   children,
 }: AiTextImproveProps) {
-  const [state, setState] = useState<AiState>('idle');
-  const [improvedText, setImprovedText] = useState('');
-  const [originalText, setOriginalText] = useState('');
-
-  const handleImprove = useCallback(async () => {
-    if (!value.trim() || state === 'loading') return;
-
-    setState('loading');
-    setOriginalText(value);
-
-    try {
-      const response = await fetch('/api/ai/improve-text', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: value, context }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to improve text');
-      }
-
-      const data = await response.json();
-      setImprovedText(data.improved_text);
-      setState('diff');
-    } catch {
-      setState('idle');
-    }
-  }, [value, context, state]);
-
-  const handleAccept = useCallback(() => {
-    onChange(improvedText);
-    setState('idle');
-    setImprovedText('');
-    setOriginalText('');
-  }, [improvedText, onChange]);
-
-  const handleReject = useCallback(() => {
-    setState('idle');
-    setImprovedText('');
-    setOriginalText('');
-  }, []);
-
-  const isEmpty = !value.trim();
+  const {
+    state,
+    improvedText,
+    originalText,
+    error,
+    isEmpty,
+    handleImprove,
+    handleAccept,
+    handleReject,
+    dismissError,
+  } = useAiTextImprove({ value, onChange, context });
 
   return (
     <div className="relative">
@@ -74,7 +39,7 @@ export function AiTextImprove({
           onClick={handleImprove}
           disabled={isEmpty || state === 'loading' || state === 'diff'}
           title={isEmpty ? 'Write some text first' : 'Improve text with AI'}
-          className="inline-flex items-center justify-center w-7 h-7 rounded-md text-[#A1A1AA] hover:text-[#7C3AED] hover:bg-[#F5F3FF] disabled:opacity-40 disabled:hover:text-[#A1A1AA] disabled:hover:bg-transparent transition-colors"
+          className="inline-flex items-center justify-center w-7 h-7 rounded-md text-[#9CA3AF] hover:text-[#7C3AED] hover:bg-[#F5F3FF] disabled:opacity-40 disabled:hover:text-[#9CA3AF] disabled:hover:bg-transparent transition-colors"
         >
           {state === 'loading' ? (
             <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -88,6 +53,24 @@ export function AiTextImprove({
           )}
         </button>
       </div>
+
+      {/* Error message */}
+      {error && (
+        <div className="absolute right-0 top-9 z-20 mr-1.5">
+          <div className="flex items-center gap-1.5 px-3 py-2 bg-[#FEF2F2] border border-[#FECACA] rounded-md shadow-e1">
+            <p className="text-xs text-[#DC2626]">{error}</p>
+            <button
+              type="button"
+              onClick={dismissError}
+              className="text-[#DC2626] hover:text-[#B91C1C] flex-shrink-0"
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Original content (textarea/MarkdownEditor) or diff view */}
       {state === 'diff' ? (

@@ -132,35 +132,35 @@ export function EntryCard({
                 return (
                     <div className="space-y-3">
                         <div>
-                            <span className="text-xs font-medium uppercase tracking-wide text-[#71717A]">
+                            <span className="text-xs font-medium uppercase tracking-wide text-[#6B7280]">
                                 Situation
                             </span>
-                            <p className="text-sm text-[#3F3F46] mt-0.5">
+                            <p className="text-sm text-[#374151] mt-0.5">
                                 {entry.situation}
                             </p>
                         </div>
                         <div>
-                            <span className="text-xs font-medium uppercase tracking-wide text-[#71717A]">
+                            <span className="text-xs font-medium uppercase tracking-wide text-[#6B7280]">
                                 Behavior
                             </span>
-                            <p className="text-sm text-[#3F3F46] mt-0.5">
+                            <p className="text-sm text-[#374151] mt-0.5">
                                 {entry.behavior}
                             </p>
                         </div>
                         <div>
-                            <span className="text-xs font-medium uppercase tracking-wide text-[#71717A]">
+                            <span className="text-xs font-medium uppercase tracking-wide text-[#6B7280]">
                                 Impact
                             </span>
-                            <p className="text-sm text-[#3F3F46] mt-0.5">
+                            <p className="text-sm text-[#374151] mt-0.5">
                                 {entry.impact}
                             </p>
                         </div>
                         {entry.notes && (
                             <div>
-                                <span className="text-xs font-medium uppercase tracking-wide text-[#71717A]">
+                                <span className="text-xs font-medium uppercase tracking-wide text-[#6B7280]">
                                     Notes
                                 </span>
-                                <MarkdownContent className="mt-0.5 text-[#3F3F46]">
+                                <MarkdownContent className="mt-0.5 text-[#374151]">
                                     {entry.notes}
                                 </MarkdownContent>
                             </div>
@@ -183,7 +183,7 @@ export function EntryCard({
                                 </a>
                             </div>
                         )}
-                        <MarkdownContent className="text-[#3F3F46]">
+                        <MarkdownContent className="text-[#374151]">
                             {entry.notes || ""}
                         </MarkdownContent>
                     </div>
@@ -192,13 +192,13 @@ export function EntryCard({
             case "third_party_feedback":
                 return (
                     <div className="space-y-2">
-                        <p className="text-sm text-[#71717A]">
+                        <p className="text-sm text-[#6B7280]">
                             From:{" "}
-                            <span className="font-medium text-[#18181B]">
+                            <span className="font-medium text-[#111827]">
                                 {entry.providerName}
                             </span>
                         </p>
-                        <MarkdownContent className="text-[#3F3F46]">
+                        <MarkdownContent className="text-[#374151]">
                             {entry.notes || ""}
                         </MarkdownContent>
                     </div>
@@ -208,11 +208,11 @@ export function EntryCard({
                 return (
                     <div className="space-y-2">
                         {entry.title && (
-                            <h3 className="text-sm font-medium text-[#18181B]">
+                            <h3 className="text-sm font-medium text-[#111827]">
                                 {entry.title}
                             </h3>
                         )}
-                        <MarkdownContent className="text-[#3F3F46]">
+                        <MarkdownContent className="text-[#374151]">
                             {entry.notes || ""}
                         </MarkdownContent>
                     </div>
@@ -220,7 +220,7 @@ export function EntryCard({
 
             default:
                 return (
-                    <MarkdownContent className="text-[#3F3F46]">
+                    <MarkdownContent className="text-[#374151]">
                         {entry.notes || ""}
                     </MarkdownContent>
                 );
@@ -234,14 +234,14 @@ export function EntryCard({
 
     return (
         <>
-            <div className="bg-white rounded-md border border-[#E4E4E7] p-4 pb-3">
+            <div className="bg-white rounded-md border border-[#E5E7EB] p-4 pb-3">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
                         <EntryBadge
                             entryType={entry.entryType}
                             feedbackType={entry.feedbackType}
                         />
-                        <span className="text-xs text-[#71717A]">
+                        <span className="text-xs text-[#6B7280]">
                             {formatDate(entry.createdAt)} at{" "}
                             {formatTime(entry.createdAt)}
                         </span>
@@ -256,13 +256,13 @@ export function EntryCard({
                                         )
                                     }
                                     disabled={updatingFeedbackGiven}
-                                    className="w-4 h-4 rounded border-[#D4D4D8] text-[#16A34A] focus:ring-[#BBF7D0] focus:ring-2 cursor-pointer disabled:opacity-50"
+                                    className="w-4 h-4 rounded border-[#D1D5DB] text-[#16A34A] focus:ring-[#BBF7D0] focus:ring-2 cursor-pointer disabled:opacity-50"
                                 />
-                                <span className="text-xs text-[#71717A] flex items-center gap-1">
+                                <span className="text-xs text-[#6B7280] flex items-center gap-1">
                                     Given
                                     {updatingFeedbackGiven && (
                                         <svg
-                                            className="w-3 h-3 animate-spin text-[#A1A1AA]"
+                                            className="w-3 h-3 animate-spin text-[#9CA3AF]"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                         >
@@ -289,7 +289,7 @@ export function EntryCard({
                         <div className="flex gap-0.5">
                             <button
                                 onClick={onEdit}
-                                className="p-2 text-[#A1A1AA] hover:text-[#52525B] hover:bg-[#F4F4F5] rounded transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+                                className="p-2 text-[#9CA3AF] hover:text-[#4B5563] hover:bg-[#F3F4F6] rounded transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
                                 aria-label="Edit entry"
                             >
                                 <svg
@@ -308,7 +308,7 @@ export function EntryCard({
                             </button>
                             <button
                                 onClick={() => setIsDeleteModalOpen(true)}
-                                className="p-2 text-[#A1A1AA] hover:text-[#DC2626] hover:bg-[#FEF2F2] rounded transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+                                className="p-2 text-[#9CA3AF] hover:text-[#DC2626] hover:bg-[#FEF2F2] rounded transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
                                 aria-label="Delete entry"
                             >
                                 <svg
@@ -330,12 +330,12 @@ export function EntryCard({
                 </div>
                 {renderContent()}
                 {linkedGoals.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-[#F4F4F5]">
+                    <div className="mt-3 pt-3 border-t border-[#F3F4F6]">
                         <div className="flex flex-wrap gap-1.5">
                             {linkedGoals.map((goal) => (
                                 <span
                                     key={goal.id}
-                                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]"
+                                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]"
                                     title={goal.description || undefined}
                                 >
                                     {goal.title}
@@ -353,20 +353,20 @@ export function EntryCard({
                 role="alertdialog"
             >
                 <div className="space-y-4">
-                    <p className="text-sm text-[#52525B]">
+                    <p className="text-sm text-[#4B5563]">
                         Are you sure you want to delete this entry? This action
                         cannot be undone.
                     </p>
-                    <div className="p-3 bg-[#FAFAFA] rounded-md border border-[#F4F4F5]">
+                    <div className="p-3 bg-[#F9FAFB] rounded-md border border-[#F3F4F6]">
                         <EntryBadge
                             entryType={entry.entryType}
                             feedbackType={entry.feedbackType}
                         />
-                        <p className="mt-2 text-sm text-[#52525B] line-clamp-2">
+                        <p className="mt-2 text-sm text-[#4B5563] line-clamp-2">
                             {entry.notes || entry.situation || ""}
                         </p>
                     </div>
-                    <div className="flex justify-end gap-2 pt-4 border-t border-[#F4F4F5]">
+                    <div className="flex justify-end gap-2 pt-4 border-t border-[#F3F4F6]">
                         <Button
                             variant="secondary"
                             onClick={() => setIsDeleteModalOpen(false)}

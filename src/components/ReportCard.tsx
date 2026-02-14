@@ -16,13 +16,13 @@ export function ReportCard({ report }: ReportCardProps) {
   return (
     <Link
       href={`/reports/${report.id}`}
-      className="block bg-white rounded-lg border border-[#E4E4E7] p-5 hover:border-[#D4D4D8] hover:shadow-sm transition-all duration-150 cursor-pointer group"
+      className="block bg-white rounded-lg border border-[#E5E7EB] p-6 hover:border-[#D1D5DB] hover:shadow-e1 transition-all duration-150 cursor-pointer group"
     >
       <div className="flex flex-col items-center text-center">
         {/* User Avatar */}
-        <div className="w-14 h-14 rounded-full bg-[#F4F4F5] flex items-center justify-center mb-3 group-hover:bg-[#E4E4E7] transition-colors">
+        <div className="w-14 h-14 rounded-full bg-[#F3F4F6] flex items-center justify-center mb-3 group-hover:bg-[#E5E7EB] transition-colors">
           <svg
-            className="w-7 h-7 text-[#71717A]"
+            className="w-7 h-7 text-[#6B7280]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,12 +37,12 @@ export function ReportCard({ report }: ReportCardProps) {
         </div>
 
         {/* Name */}
-        <h3 className="text-sm font-medium text-[#18181B] tracking-tight">
+        <h3 className="text-sm font-medium text-[#111827] tracking-tight">
           {report.firstName} {report.lastName}
         </h3>
 
         {/* Entry count */}
-        <p className="text-xs text-[#71717A] mt-1">{entryLabel}</p>
+        <p className="text-xs text-[#6B7280] mt-1">{entryLabel}</p>
       </div>
     </Link>
   );

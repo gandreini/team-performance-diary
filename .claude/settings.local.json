@@ -14,7 +14,16 @@
       "Bash(npx tsx:*)",
       "Bash(npx tsc:*)",
       "mcp__chrome-devtools__list_pages",
-      "mcp__chrome-devtools__new_page"
+      "mcp__chrome-devtools__new_page",
+      "Bash(npx drizzle-kit push:*)",
+      "Bash(npx drizzle-kit generate:*)",
+      "Bash(npx drizzle-kit migrate:*)",
+      "Bash(node -e:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(source:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)"
     ]
   }
 }

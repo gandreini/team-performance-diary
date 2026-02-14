@@ -48,7 +48,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`px-4 py-3 rounded-md shadow-md text-sm font-medium flex items-center gap-2 animate-slide-up border ${
+            className={`px-4 py-3 rounded-md shadow-e2 text-sm font-medium flex items-center gap-2 animate-slide-up border ${
               toast.type === 'success'
                 ? 'bg-white text-[#15803D] border-[#BBF7D0]'
                 : 'bg-white text-[#B91C1C] border-[#FECACA]'
@@ -66,7 +66,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             <span>{toast.message}</span>
             <button
               onClick={() => removeToast(toast.id)}
-              className="ml-auto text-[#A1A1AA] hover:text-[#52525B] transition-colors"
+              className="ml-auto text-[#9CA3AF] hover:text-[#4B5563] transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

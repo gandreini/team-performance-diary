@@ -1,4 +1,4 @@
-import { db, reports, entries, archivedGoals, type Report, type NewReport } from '@/db';
+import { db, reports, entries, archivedGoals, reportSummaries, type Report, type NewReport } from '@/db';
 import { eq, and, count, asc } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -63,6 +63,7 @@ export async function deleteReport(id: string): Promise<boolean> {
   if (!existing) return false;
 
   // Cascade deletes are handled by the database, but let's be explicit
+  await db.delete(reportSummaries).where(eq(reportSummaries.reportId, id));
   await db.delete(archivedGoals).where(eq(archivedGoals.reportId, id));
   await db.delete(entries).where(eq(entries.reportId, id));
   await db.delete(reports).where(eq(reports.id, id));

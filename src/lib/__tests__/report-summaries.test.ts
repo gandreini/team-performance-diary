@@ -3,14 +3,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 // Mock the database module
 const mockSelect = vi.fn();
 const mockInsert = vi.fn();
-const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
 vi.mock('@/db', () => ({
   db: {
     select: () => mockSelect(),
     insert: () => mockInsert(),
-    update: () => mockUpdate(),
     delete: () => mockDelete(),
   },
   reportSummaries: {
@@ -74,59 +72,80 @@ describe('report-summaries lib', () => {
   });
 
   describe('upsertSummary', () => {
-    it('should create a new summary when none exists', async () => {
-      // getSummary returns null
+    it('should insert and return the summary', async () => {
+      const savedSummary = {
+        id: 'test-uuid-1234',
+        reportId: 'rep-1',
+        cycleId: 'cyc-1',
+        content: '## New summary',
+        generatedAt: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      };
+
+      // Mock insert().values().onConflictDoUpdate()
+      mockInsert.mockReturnValue({
+        values: vi.fn().mockReturnValue({
+          onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
+        }),
+      });
+
+      // Mock the follow-up getSummary call
       mockSelect.mockReturnValue({
         from: vi.fn().mockReturnValue({
           where: vi.fn().mockReturnValue({
-            limit: vi.fn().mockResolvedValue([]),
+            limit: vi.fn().mockResolvedValue([savedSummary]),
           }),
         }),
       });
 
-      mockInsert.mockReturnValue({
-        values: vi.fn().mockResolvedValue(undefined),
-      });
-
       const result = await upsertSummary('rep-1', 'cyc-1', '## New summary');
 
-      expect(result.id).toBe('test-uuid-1234');
       expect(result.reportId).toBe('rep-1');
       expect(result.cycleId).toBe('cyc-1');
       expect(result.content).toBe('## New summary');
       expect(mockInsert).toHaveBeenCalled();
     });
 
-    it('should update existing summary', async () => {
-      const existingSummary = {
+    it('should use onConflictDoUpdate for atomic upsert', async () => {
+      const onConflictMock = vi.fn().mockResolvedValue(undefined);
+      const valuesMock = vi.fn().mockReturnValue({
+        onConflictDoUpdate: onConflictMock,
+      });
+
+      mockInsert.mockReturnValue({
+        values: valuesMock,
+      });
+
+      const updatedSummary = {
         id: 'existing-id',
         reportId: 'rep-1',
         cycleId: 'cyc-1',
-        content: '## Old summary',
-        generatedAt: '2026-02-13T10:00:00Z',
+        content: '## Updated summary',
+        generatedAt: expect.any(String),
         createdAt: '2026-02-13T10:00:00Z',
-        updatedAt: '2026-02-13T10:00:00Z',
+        updatedAt: expect.any(String),
       };
 
       mockSelect.mockReturnValue({
         from: vi.fn().mockReturnValue({
           where: vi.fn().mockReturnValue({
-            limit: vi.fn().mockResolvedValue([existingSummary]),
+            limit: vi.fn().mockResolvedValue([updatedSummary]),
           }),
-        }),
-      });
-
-      mockUpdate.mockReturnValue({
-        set: vi.fn().mockReturnValue({
-          where: vi.fn().mockResolvedValue(undefined),
         }),
       });
 
       const result = await upsertSummary('rep-1', 'cyc-1', '## Updated summary');
 
-      expect(result.id).toBe('existing-id');
+      expect(onConflictMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          target: expect.any(Array),
+          set: expect.objectContaining({
+            content: '## Updated summary',
+          }),
+        })
+      );
       expect(result.content).toBe('## Updated summary');
-      expect(mockUpdate).toHaveBeenCalled();
     });
   });
 

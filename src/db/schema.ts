@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 // Cycles table
 export const cycles = sqliteTable('cycles', {
@@ -58,7 +58,9 @@ export const reportSummaries = sqliteTable('report_summaries', {
   generatedAt: text('generated_at').notNull(),
   createdAt: text('created_at').notNull().default(new Date().toISOString()),
   updatedAt: text('updated_at').notNull().default(new Date().toISOString()),
-});
+}, (table) => [
+  uniqueIndex('report_summaries_report_cycle_idx').on(table.reportId, table.cycleId),
+]);
 
 // Entries table
 export const entries = sqliteTable('entries', {

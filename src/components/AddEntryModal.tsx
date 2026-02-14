@@ -211,21 +211,21 @@ export function AddEntryModal({
         <button
           key={value}
           onClick={() => handleTypeSelect(value)}
-          className="p-3 text-left border border-[#E4E4E7] rounded-md hover:border-[#8B5CF6] hover:bg-[#F5F3FF] transition-colors"
+          className="p-3 text-left border border-[#E5E7EB] rounded-md hover:border-[#8B5CF6] hover:bg-[#F5F3FF] transition-colors"
         >
-          <span className="text-sm font-medium text-[#18181B]">{label}</span>
+          <span className="text-sm font-medium text-[#111827]">{label}</span>
         </button>
       ))}
     </div>
   );
 
-  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#A1A1AA]";
-  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#A1A1AA] resize-none";
+  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF]";
+  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF] resize-none";
 
   const renderFeedbackForm = () => (
     <>
       <div>
-        <label className="block text-sm font-medium text-[#3F3F46] mb-2">Feedback Type</label>
+        <label className="block text-sm font-medium text-[#374151] mb-2">Feedback Type</label>
         <div className="flex gap-4">
           <label className="flex items-center cursor-pointer">
             <input
@@ -234,9 +234,9 @@ export function AddEntryModal({
               value="positive"
               checked={feedbackType === 'positive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D4D4D8]"
+              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
             />
-            <span className="ml-2 text-sm text-[#3F3F46]">Positive</span>
+            <span className="ml-2 text-sm text-[#374151]">Positive</span>
           </label>
           <label className="flex items-center cursor-pointer">
             <input
@@ -245,18 +245,18 @@ export function AddEntryModal({
               value="constructive"
               checked={feedbackType === 'constructive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D4D4D8]"
+              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
             />
-            <span className="ml-2 text-sm text-[#3F3F46]">Constructive</span>
+            <span className="ml-2 text-sm text-[#374151]">Constructive</span>
           </label>
         </div>
       </div>
 
       <div>
-        <label htmlFor="situation" className="block text-sm font-medium text-[#3F3F46] mb-1">
+        <label htmlFor="situation" className="block text-sm font-medium text-[#374151] mb-1">
           Situation
         </label>
-        <p className="text-xs text-[#71717A] mb-1.5">
+        <p className="text-xs text-[#6B7280] mb-1.5">
           Describe the specific context—when and where this occurred
         </p>
         <textarea
@@ -266,16 +266,16 @@ export function AddEntryModal({
           rows={3}
           className={textareaClassName}
         />
-        <p className={`text-xs mt-1 text-right ${situation.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${situation.length > 1000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {situation.length} / 1000
         </p>
       </div>
 
       <div>
-        <label htmlFor="behavior" className="block text-sm font-medium text-[#3F3F46] mb-1">
+        <label htmlFor="behavior" className="block text-sm font-medium text-[#374151] mb-1">
           Behavior
         </label>
-        <p className="text-xs text-[#71717A] mb-1.5">
+        <p className="text-xs text-[#6B7280] mb-1.5">
           Describe the specific, observable action (not your interpretation)
         </p>
         <textarea
@@ -285,16 +285,16 @@ export function AddEntryModal({
           rows={3}
           className={textareaClassName}
         />
-        <p className={`text-xs mt-1 text-right ${behavior.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${behavior.length > 1000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {behavior.length} / 1000
         </p>
       </div>
 
       <div>
-        <label htmlFor="impact" className="block text-sm font-medium text-[#3F3F46] mb-1">
+        <label htmlFor="impact" className="block text-sm font-medium text-[#374151] mb-1">
           Impact
         </label>
-        <p className="text-xs text-[#71717A] mb-1.5">
+        <p className="text-xs text-[#6B7280] mb-1.5">
           Describe the effect on you, the team, or outcomes
         </p>
         <textarea
@@ -304,13 +304,13 @@ export function AddEntryModal({
           rows={3}
           className={textareaClassName}
         />
-        <p className={`text-xs mt-1 text-right ${impact.length > 1000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${impact.length > 1000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {impact.length} / 1000
         </p>
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-[#3F3F46] mb-1">
+        <label htmlFor="notes" className="block text-sm font-medium text-[#374151] mb-1">
           Additional notes (optional)
         </label>
         <textarea
@@ -321,7 +321,7 @@ export function AddEntryModal({
           className={textareaClassName}
           placeholder="Markdown supported"
         />
-        <p className={`text-xs mt-1 text-right ${notes.length > 2000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${notes.length > 2000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {notes.length} / 2000
         </p>
       </div>
@@ -331,7 +331,7 @@ export function AddEntryModal({
   const renderKudosForm = () => (
     <>
       <div>
-        <label htmlFor="link" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+        <label htmlFor="link" className="block text-sm font-medium text-[#374151] mb-1.5">
           Link to kudos (optional)
         </label>
         <input
@@ -348,7 +348,7 @@ export function AddEntryModal({
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+        <label htmlFor="notes" className="block text-sm font-medium text-[#374151] mb-1.5">
           Describe the kudos
         </label>
         <textarea
@@ -359,7 +359,7 @@ export function AddEntryModal({
           className={textareaClassName}
           placeholder="Markdown supported"
         />
-        <p className={`text-xs mt-1 text-right ${notes.length > 5000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${notes.length > 5000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {notes.length} / 5000
         </p>
       </div>
@@ -369,7 +369,7 @@ export function AddEntryModal({
   const renderThirdPartyFeedbackForm = () => (
     <>
       <div>
-        <label htmlFor="providerName" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+        <label htmlFor="providerName" className="block text-sm font-medium text-[#374151] mb-1.5">
           Who provided this feedback?
         </label>
         <input
@@ -379,13 +379,13 @@ export function AddEntryModal({
           onChange={(e) => { setProviderName(e.target.value); setHasChanges(true); }}
           className={inputClassName}
         />
-        <p className={`text-xs mt-1 text-right ${providerName.trim().length > 100 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${providerName.trim().length > 100 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {providerName.trim().length} / 100
         </p>
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+        <label htmlFor="notes" className="block text-sm font-medium text-[#374151] mb-1.5">
           Feedback content
         </label>
         <textarea
@@ -396,7 +396,7 @@ export function AddEntryModal({
           className={textareaClassName}
           placeholder="Markdown supported"
         />
-        <p className={`text-xs mt-1 text-right ${notes.length > 5000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+        <p className={`text-xs mt-1 text-right ${notes.length > 5000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
           {notes.length} / 5000
         </p>
       </div>
@@ -405,7 +405,7 @@ export function AddEntryModal({
 
   const renderSimpleForm = (label: string, placeholder: string) => (
     <div>
-      <label htmlFor="notes" className="block text-sm font-medium text-[#3F3F46] mb-1.5">
+      <label htmlFor="notes" className="block text-sm font-medium text-[#374151] mb-1.5">
         {label}
       </label>
       <textarea
@@ -416,7 +416,7 @@ export function AddEntryModal({
         className={textareaClassName}
         placeholder={placeholder}
       />
-      <p className={`text-xs mt-1 text-right ${notes.length > 5000 ? 'text-[#DC2626]' : 'text-[#71717A]'}`}>
+      <p className={`text-xs mt-1 text-right ${notes.length > 5000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
         {notes.length} / 5000
       </p>
     </div>
@@ -450,7 +450,7 @@ export function AddEntryModal({
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           {renderForm()}
-          <div className="flex justify-end gap-2 pt-4 border-t border-[#F4F4F5]">
+          <div className="flex justify-end gap-2 pt-4 border-t border-[#F3F4F6]">
             <Button type="button" variant="secondary" onClick={handleClose}>
               Cancel
             </Button>

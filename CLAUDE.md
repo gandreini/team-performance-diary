@@ -42,8 +42,8 @@ DATABASE_URL=libsql://your-db.turso.io    # Turso database URL
 DATABASE_AUTH_TOKEN=your-token             # Turso auth token
 BASIC_AUTH_USER=username                   # Basic auth username
 BASIC_AUTH_PASS=password                   # Basic auth password
-N8N_IMPROVE_TEXT_WEBHOOK_URL=https://n8n.mondo.surf/webhook/tpd-improve-text
-N8N_REPORT_SUMMARY_WEBHOOK_URL=https://n8n.mondo.surf/webhook/tpd-report-summary
+N8N_IMPROVE_TEXT_WEBHOOK_URL=https://your-n8n-instance.com/webhook/tpd-improve-text
+N8N_REPORT_SUMMARY_WEBHOOK_URL=https://your-n8n-instance.com/webhook/tpd-report-summary
 N8N_WEBHOOK_AUTH_TOKEN=your-token         # Optional Bearer token for N8N webhooks
 ```
 

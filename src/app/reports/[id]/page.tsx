@@ -119,30 +119,30 @@ export default function ReportDiaryPage({
         <div>
             {/* Breadcrumb */}
             <nav className="mb-4">
-                <ol className="flex items-center text-xs text-[#71717A]">
+                <ol className="flex items-center text-xs text-[#6B7280]">
                     <li>
                         <Link
                             href="/"
-                            className="hover:text-[#18181B] transition-colors"
+                            className="hover:text-[#111827] transition-colors"
                         >
                             Home
                         </Link>
                     </li>
-                    <li className="mx-1.5 text-[#D4D4D8]">/</li>
-                    <li className="text-[#18181B] font-medium">
+                    <li className="mx-1.5 text-[#D1D5DB]">/</li>
+                    <li className="text-[#111827] font-medium">
                         {report.firstName} {report.lastName}
                     </li>
                 </ol>
             </nav>
 
             {/* Two-column layout for wide screens */}
-            <div className="xl:flex xl:gap-4 relative z-0">
+            <div className="min-[1080px]:flex min-[1080px]:gap-4 relative z-0">
                 {/* Left Column - Sticky on wide screens */}
-                <div className="xl:w-[500px] xl:flex-shrink-0">
-                    <div className="xl:sticky xl:top-4 z-10">
+                <div className="min-[1080px]:w-[500px] min-[1080px]:flex-shrink-0">
+                    <div className="min-[1080px]:sticky min-[1080px]:top-4 z-10">
                         {/* Header */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                            <h1 className="text-lg font-semibold text-[#18181B] tracking-tight">
+                            <h1 className="text-lg font-semibold text-[#111827] tracking-tight">
                                 {report.firstName} {report.lastName}
                             </h1>
                             <Button
@@ -161,19 +161,19 @@ export default function ReportDiaryPage({
                         />
 
                         {/* Development Goals Section */}
-                        <div className="bg-white rounded-md border border-[#E4E4E7] mb-6 xl:mb-0">
+                        <div className="bg-white rounded-md border border-[#E5E7EB] mb-6 min-[1080px]:mb-0">
                             <button
                                 type="button"
                                 onClick={() =>
                                     setIsGoalsExpanded(!isGoalsExpanded)
                                 }
-                                className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-[#FAFAFA] transition-colors rounded-md"
+                                className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-[#F9FAFB] transition-colors rounded-md"
                             >
-                                <h2 className="text-md font-semibold text-[#18181B] tracking-tight">
+                                <h2 className="text-md font-semibold text-[#111827] tracking-tight">
                                     Development Goals
                                 </h2>
                                 <svg
-                                    className={`w-4 h-4 text-[#71717A] transition-transform duration-200 ${
+                                    className={`w-4 h-4 text-[#6B7280] transition-transform duration-200 ${
                                         isGoalsExpanded ? "rotate-180" : ""
                                     }`}
                                     fill="none"
@@ -205,7 +205,7 @@ export default function ReportDiaryPage({
                 </div>
 
                 {/* Right Column - Entries */}
-                <div className="xl:flex-1 xl:min-w-0">
+                <div className="min-[1080px]:flex-1 min-[1080px]:min-w-0">
                     {/* Header row - matches left column header height */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -216,7 +216,7 @@ export default function ReportDiaryPage({
                                         e.target.value as EntryType | "all"
                                     )
                                 }
-                                className="px-3 py-2 text-sm border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[40px]"
+                                className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] bg-white transition-colors min-h-[40px]"
                             >
                                 {ENTRY_TYPE_OPTIONS.map((option) => (
                                     <option
@@ -227,7 +227,7 @@ export default function ReportDiaryPage({
                                     </option>
                                 ))}
                             </select>
-                            <span className="text-xs text-[#71717A]">
+                            <span className="text-xs text-[#6B7280]">
                                 {filteredEntries.length}{" "}
                                 {filteredEntries.length === 1
                                     ? "entry"
@@ -262,9 +262,9 @@ export default function ReportDiaryPage({
                     </div>
 
                     {filteredEntries.length === 0 ? (
-                        <div className="text-center py-12 bg-white rounded-md border border-[#E4E4E7]">
+                        <div className="text-center py-12 bg-white rounded-md border border-[#E5E7EB]">
                             <svg
-                                className="mx-auto h-10 w-10 text-[#D4D4D8]"
+                                className="mx-auto h-10 w-10 text-[#D1D5DB]"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -276,14 +276,14 @@ export default function ReportDiaryPage({
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                 />
                             </svg>
-                            <h3 className="mt-4 text-sm font-medium text-[#18181B]">
+                            <h3 className="mt-4 text-sm font-medium text-[#111827]">
                                 {filter === "all"
                                     ? "No entries yet"
                                     : `No ${ENTRY_TYPE_OPTIONS.find(
                                           (o) => o.value === filter
                                       )?.label.toLowerCase()} entries yet`}
                             </h3>
-                            <p className="mt-1 text-sm text-[#71717A]">
+                            <p className="mt-1 text-sm text-[#6B7280]">
                                 Start tracking by adding your first entry.
                             </p>
                             <div className="mt-6">

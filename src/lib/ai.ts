@@ -87,7 +87,7 @@ export async function improveText(text: string, context: string): Promise<string
   }
 
   // Handle JSON response: { improved_text: "..." }
-  const improved = (result as ImproveTextResponse).improved_text;
+  const improved = (result as unknown as ImproveTextResponse).improved_text;
   if (!improved || typeof improved !== 'string') {
     throw new Error('Invalid response from AI service: missing improved_text');
   }
@@ -112,7 +112,7 @@ export async function generateReportSummary(payload: ReportSummaryPayload): Prom
   }
 
   // Handle JSON response: { summary: "..." }
-  const summary = (result as ReportSummaryResponse).summary;
+  const summary = (result as unknown as ReportSummaryResponse).summary;
   if (!summary || typeof summary !== 'string') {
     throw new Error('Invalid response from AI service: missing summary');
   }

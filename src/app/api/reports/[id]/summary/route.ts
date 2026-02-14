@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getReportById } from '@/lib/reports';
 import { getEntriesByReportAndCycle } from '@/lib/entries';
-import { getGoalsByReport, getGoalIdsForEntry } from '@/lib/goals';
+import { getGoalsByReport, getGoalLinksForEntries } from '@/lib/goals';
 import { getSummary, upsertSummary } from '@/lib/report-summaries';
 import { generateReportSummary, type ReportSummaryEntry } from '@/lib/ai';
 
@@ -78,28 +78,29 @@ export async function POST(
     // Collect development goals
     const goals = await getGoalsByReport(id);
 
-    // Build entry payloads with linked goal titles
-    const entryPayloads: ReportSummaryEntry[] = await Promise.all(
-      entries.map(async (entry) => {
-        const linkedGoalIds = await getGoalIdsForEntry(entry.id);
-        const linkedGoalTitles = goals
-          .filter((g) => linkedGoalIds.includes(g.id))
-          .map((g) => g.title);
+    // Batch-fetch all entry-goal links in one query (avoids N+1)
+    const goalLinksMap = await getGoalLinksForEntries(entries.map((e) => e.id));
 
-        return {
-          entryType: entry.entryType,
-          feedbackType: entry.feedbackType,
-          feedbackGiven: entry.feedbackGiven,
-          situation: entry.situation,
-          behavior: entry.behavior,
-          impact: entry.impact,
-          title: entry.title,
-          notes: entry.notes,
-          providerName: entry.providerName,
-          linkedGoals: linkedGoalTitles,
-        };
-      })
-    );
+    // Build entry payloads with linked goal titles
+    const entryPayloads: ReportSummaryEntry[] = entries.map((entry) => {
+      const linkedGoalIds = goalLinksMap.get(entry.id) || [];
+      const linkedGoalTitles = goals
+        .filter((g) => linkedGoalIds.includes(g.id))
+        .map((g) => g.title);
+
+      return {
+        entryType: entry.entryType,
+        feedbackType: entry.feedbackType,
+        feedbackGiven: entry.feedbackGiven,
+        situation: entry.situation,
+        behavior: entry.behavior,
+        impact: entry.impact,
+        title: entry.title,
+        notes: entry.notes,
+        providerName: entry.providerName,
+        linkedGoals: linkedGoalTitles,
+      };
+    });
 
     // Call N8N to generate summary
     const summaryText = await generateReportSummary({

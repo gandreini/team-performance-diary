@@ -68,16 +68,16 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h1 className="text-lg font-semibold text-[#18181B] tracking-tight">Reports</h1>
+        <h1 className="text-lg font-semibold text-[#111827] tracking-tight">Reports</h1>
         <Button onClick={() => setIsAddModalOpen(true)}>
           Add Report
         </Button>
       </div>
 
       {reports.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-md border border-[#E4E4E7]">
+        <div className="text-center py-12 bg-white rounded-md border border-[#E5E7EB]">
           <svg
-            className="mx-auto h-10 w-10 text-[#D4D4D8]"
+            className="mx-auto h-10 w-10 text-[#D1D5DB]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -89,8 +89,8 @@ export default function Home() {
               d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
             />
           </svg>
-          <h3 className="mt-4 text-sm font-medium text-[#18181B]">No reports yet</h3>
-          <p className="mt-1 text-sm text-[#71717A]">
+          <h3 className="mt-4 text-sm font-medium text-[#111827]">No reports yet</h3>
+          <p className="mt-1 text-sm text-[#6B7280]">
             Add your first report to get started.
           </p>
           <div className="mt-6">
