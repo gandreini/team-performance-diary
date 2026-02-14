@@ -10,6 +10,7 @@ import { AddEntryDrawer } from "@/components/AddEntryDrawer";
 import { EditReportDrawer } from "@/components/EditReportDrawer";
 import { ScrollArea } from "@/components/ScrollArea";
 import { GoalsList } from "@/components/GoalsList";
+import { ReportSummary } from "@/components/ReportSummary";
 import { useToast } from "@/components/Toast";
 import type { Report, Entry, Cycle, EntryType, DevelopmentGoal } from "@/db";
 
@@ -151,6 +152,13 @@ export default function ReportDiaryPage({
                                 Edit Report
                             </Button>
                         </div>
+
+                        {/* AI Summary Section */}
+                        <ReportSummary
+                            reportId={report.id}
+                            cycleId={cycle.id}
+                            hasEntries={entries.length > 0}
+                        />
 
                         {/* Development Goals Section */}
                         <div className="bg-white rounded-md border border-[#E4E4E7] mb-6 xl:mb-0">
