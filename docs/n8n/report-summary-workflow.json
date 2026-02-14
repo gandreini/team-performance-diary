@@ -1,0 +1,169 @@
+{
+  "name": "TPD - Report Summary",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "report-summary",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "report-summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body;\n\nconst report = body.report;\nconst goals = body.goals || [];\nconst entries = body.entries || [];\n\n// Build a structured prompt with all the data\nlet prompt = `You are a performance management expert. Generate a concise, insightful summary for a team member's performance review.\\n\\n`;\nprompt += `## Team Member: ${report.firstName} ${report.lastName}\\n\\n`;\n\n// Goals section\nif (goals.length > 0) {\n  prompt += `## Development Goals\\n`;\n  goals.forEach((goal, i) => {\n    prompt += `${i + 1}. **${goal.title}**`;\n    if (goal.description) prompt += ` - ${goal.description}`;\n    prompt += `\\n`;\n  });\n  prompt += `\\n`;\n}\n\n// Entries section grouped by type\nconst entryTypes = {\n  feedback: 'Feedback',\n  accomplishment: 'Accomplishments',\n  kudos: 'Kudos',\n  notes: 'Notes',\n  career_conversation: 'Career Conversations',\n  third_party_feedback: 'Third-Party Feedback'\n};\n\nfor (const [type, label] of Object.entries(entryTypes)) {\n  const typeEntries = entries.filter(e => e.entryType === type);\n  if (typeEntries.length === 0) continue;\n\n  prompt += `## ${label} (${typeEntries.length})\\n`;\n  typeEntries.forEach((entry, i) => {\n    prompt += `### Entry ${i + 1}`;\n    if (entry.title) prompt += `: ${entry.title}`;\n    prompt += `\\n`;\n\n    if (entry.feedbackType) prompt += `- Type: ${entry.feedbackType}\\n`;\n    if (entry.feedbackGiven !== null) prompt += `- Feedback delivered: ${entry.feedbackGiven ? 'Yes' : 'No'}\\n`;\n    if (entry.situation) prompt += `- Situation: ${entry.situation}\\n`;\n    if (entry.behavior) prompt += `- Behavior: ${entry.behavior}\\n`;\n    if (entry.impact) prompt += `- Impact: ${entry.impact}\\n`;\n    if (entry.notes) prompt += `- Notes: ${entry.notes}\\n`;\n    if (entry.providerName) prompt += `- Provider: ${entry.providerName}\\n`;\n    if (entry.linkedGoals && entry.linkedGoals.length > 0) {\n      prompt += `- Linked Goals: ${entry.linkedGoals.join(', ')}\\n`;\n    }\n    prompt += `\\n`;\n  });\n}\n\nprompt += `---\\n\\n`;\nprompt += `Based on all the above entries and goals, write a performance summary in markdown format. Include:\\n`;\nprompt += `1. **Overall Performance** - A brief overall assessment (2-3 sentences)\\n`;\nprompt += `2. **Key Strengths** - Top strengths demonstrated across entries\\n`;\nprompt += `3. **Areas for Growth** - Areas where improvement was noted or constructive feedback was given\\n`;\nprompt += `4. **Goal Progress** - How entries relate to their development goals (if goals exist)\\n`;\nprompt += `5. **Recommendations** - Actionable next steps\\n\\n`;\nprompt += `Keep the summary concise (300-500 words). Use bullet points. Be specific, referencing actual entries where relevant. Do not include a title heading - start directly with the content.`;\n\nreturn [{ json: { prompt } }];"
+      },
+      "id": "build-prompt",
+      "name": "Build Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.ANTHROPIC_API_KEY }}"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  model: \"claude-sonnet-4-5-20250514\",\n  max_tokens: 4096,\n  messages: [\n    {\n      role: \"user\",\n      content: $json.prompt\n    }\n  ]\n}) }}",
+        "options": {
+          "timeout": 25000
+        }
+      },
+      "id": "anthropic-request",
+      "name": "Call Anthropic",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\n\nconst summaryText = response.content?.[0]?.text || '';\n\nif (!summaryText) {\n  throw new Error('No summary returned from Anthropic');\n}\n\nreturn [{ json: { summary: summaryText.trim() } }];"
+      },
+      "id": "extract-summary",
+      "name": "Extract Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-success",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: $json.message || 'Failed to generate summary' }) }}",
+        "options": {
+          "responseCode": 500,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-error",
+      "name": "Respond Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1200, 500]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Build Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Prompt": {
+      "main": [
+        [
+          {
+            "node": "Call Anthropic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Anthropic": {
+      "main": [
+        [
+          {
+            "node": "Extract Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Summary": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [],
+  "pinData": {}
+}
