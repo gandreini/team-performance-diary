@@ -198,7 +198,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#7C3AED]" />
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#3B82F6]" />
       </div>
     );
   }
@@ -339,8 +339,8 @@ export default function SettingsPage() {
                 setNewCycleName(e.target.value);
                 setArchiveError('');
               }}
-              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors placeholder:text-[#9CA3AF] ${
-                archiveError ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+              className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors placeholder:text-[#9CA3AF] ${
+                archiveError ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
               }`}
               placeholder="e.g., H1 2025, Q2 Review"
             />

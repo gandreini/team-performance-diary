@@ -13,6 +13,7 @@ interface EntryCardProps {
     onEdit: () => void;
     onDelete: () => void;
     readOnly?: boolean;
+    refreshKey?: number;
 }
 
 export function EntryCard({
@@ -20,6 +21,7 @@ export function EntryCard({
     onEdit,
     onDelete,
     readOnly = false,
+    refreshKey = 0,
 }: EntryCardProps) {
     const { showToast } = useToast();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -60,7 +62,7 @@ export function EntryCard({
             }
         }
         fetchLinkedGoals();
-    }, [entry.id, entry.reportId]);
+    }, [entry.id, entry.reportId, refreshKey]);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);

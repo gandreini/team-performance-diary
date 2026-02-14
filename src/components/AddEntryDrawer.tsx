@@ -180,10 +180,8 @@ export function AddEntryDrawer({
           body.notes = notes.trim();
       }
 
-      // Include linked goals when editing
-      if (isEditing && linkedGoalIds.length > 0) {
-        body.goal_ids = linkedGoalIds;
-      }
+      // Include linked goals for both create and edit
+      body.goal_ids = linkedGoalIds;
 
       const response = await fetch(url, {
         method,
@@ -212,11 +210,11 @@ export function AddEntryDrawer({
     return `${isEditing ? 'Edit' : 'Add'} ${typeLabel}`;
   };
 
-  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF]";
-  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] focus:border-[#8B5CF6] transition-colors placeholder:text-[#9CA3AF] resize-none";
+  const inputClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] transition-colors placeholder:text-[#9CA3AF]";
+  const textareaClassName = "w-full px-3 py-2 text-sm border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] focus:border-[#3B82F6] transition-colors placeholder:text-[#9CA3AF] resize-none";
 
   const renderFeedbackForm = () => (
-    <div className="flex flex-col h-full gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex-shrink-0">
         <label className="block text-sm font-medium text-[#374151] mb-2">Feedback Type</label>
         <div className="flex gap-4">
@@ -227,7 +225,7 @@ export function AddEntryDrawer({
               value="positive"
               checked={feedbackType === 'positive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
+              className="h-4 w-4 text-[#3B82F6] focus:ring-[#3B82F6] border-[#D1D5DB]"
             />
             <span className="ml-2 text-sm text-[#374151]">Positive</span>
           </label>
@@ -238,7 +236,7 @@ export function AddEntryDrawer({
               value="constructive"
               checked={feedbackType === 'constructive'}
               onChange={(e) => { setFeedbackType(e.target.value as FeedbackType); setHasChanges(true); }}
-              className="h-4 w-4 text-[#7C3AED] focus:ring-[#8B5CF6] border-[#D1D5DB]"
+              className="h-4 w-4 text-[#3B82F6] focus:ring-[#3B82F6] border-[#D1D5DB]"
             />
             <span className="ml-2 text-sm text-[#374151]">Constructive</span>
           </label>
@@ -308,7 +306,7 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div className="flex-1 flex flex-col min-h-0">
+      <div>
         <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Additional notes (optional)
         </label>
@@ -316,7 +314,7 @@ export function AddEntryDrawer({
           value={notes}
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={2000}
-          fillHeight
+          rows={8}
           aiContext="feedback additional notes"
         />
       </div>
@@ -324,7 +322,7 @@ export function AddEntryDrawer({
   );
 
   const renderKudosForm = () => (
-    <div className="flex flex-col h-full gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex-shrink-0">
         <label htmlFor="link" className="block text-sm font-medium text-[#374151] mb-1.5">
           Link to kudos (optional)
@@ -342,7 +340,7 @@ export function AddEntryDrawer({
         )}
       </div>
 
-      <div className="flex-1 flex flex-col min-h-0">
+      <div>
         <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Describe the kudos
         </label>
@@ -350,7 +348,7 @@ export function AddEntryDrawer({
           value={notes}
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
-          fillHeight
+          rows={8}
           aiContext="kudos description"
         />
       </div>
@@ -358,7 +356,7 @@ export function AddEntryDrawer({
   );
 
   const renderThirdPartyFeedbackForm = () => (
-    <div className="flex flex-col h-full gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex-shrink-0">
         <label htmlFor="providerName" className="block text-sm font-medium text-[#374151] mb-1.5">
           Who provided this feedback?
@@ -375,7 +373,7 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div className="flex-1 flex flex-col min-h-0">
+      <div>
         <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Feedback content
         </label>
@@ -383,7 +381,7 @@ export function AddEntryDrawer({
           value={notes}
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
-          fillHeight
+          rows={8}
           aiContext="third-party feedback content"
         />
       </div>
@@ -391,7 +389,7 @@ export function AddEntryDrawer({
   );
 
   const renderSimpleForm = (label: string, context: string) => (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
         {label}
       </label>
@@ -399,14 +397,14 @@ export function AddEntryDrawer({
         value={notes}
         onChange={(value) => { setNotes(value); setHasChanges(true); }}
         maxLength={5000}
-        fillHeight
+        rows={8}
         aiContext={context}
       />
     </div>
   );
 
   const renderAccomplishmentForm = () => (
-    <div className="flex flex-col h-full gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex-shrink-0">
         <label htmlFor="title" className="block text-sm font-medium text-[#374151] mb-1.5">
           Title (optional)
@@ -424,7 +422,7 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div className="flex-1 flex flex-col min-h-0">
+      <div>
         <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           What did they accomplish?
         </label>
@@ -432,7 +430,7 @@ export function AddEntryDrawer({
           value={notes}
           onChange={(value) => { setNotes(value); setHasChanges(true); }}
           maxLength={5000}
-          fillHeight
+          rows={8}
           aiContext="accomplishment description"
         />
       </div>
@@ -460,24 +458,22 @@ export function AddEntryDrawer({
 
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} title={getTitle()} width="xl">
-      <form onSubmit={handleSubmit} className="flex flex-col h-full">
-        <div className="flex-1 min-h-0">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-0">
+        <div>
           {renderForm()}
         </div>
 
-        {/* Goal Linking - Only shown when editing */}
-        {isEditing && (
-          <div className="pt-5 mt-5 border-t border-[#F3F4F6] flex-shrink-0">
-            <label className="block text-sm font-medium text-[#374151] mb-2">
-              Link to Development Goals
-            </label>
-            <GoalLinkSelector
-              reportId={reportId}
-              selectedGoalIds={linkedGoalIds}
-              onChange={(goalIds) => { setLinkedGoalIds(goalIds); setHasChanges(true); }}
-            />
-          </div>
-        )}
+        {/* Goal Linking */}
+        <div className="pt-5 mt-5 border-t border-[#F3F4F6] flex-shrink-0">
+          <label className="block text-sm font-medium text-[#374151] mb-2">
+            Link to Development Goals
+          </label>
+          <GoalLinkSelector
+            reportId={reportId}
+            selectedGoalIds={linkedGoalIds}
+            onChange={(goalIds) => { setLinkedGoalIds(goalIds); setHasChanges(true); }}
+          />
+        </div>
 
         <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F3F4F6] flex-shrink-0">
           <Button type="button" variant="secondary" onClick={handleClose}>

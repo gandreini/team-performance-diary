@@ -36,7 +36,7 @@ export function MarkdownEditor({
   const ai = useAiTextImprove({ value, onChange, context: aiContext || '' });
 
   return (
-    <div className={`border border-[#E5E7EB] rounded-md overflow-hidden ${fillHeight ? 'flex flex-col h-full' : ''} ${className}`}>
+    <div className={`border border-[#E5E7EB] rounded-md overflow-hidden ${fillHeight ? 'flex flex-col h-full' : ''} ${ai.state === 'loading' ? 'ai-loading-border' : ''} ${className}`}>
       {/* Tabs */}
       <div className="flex items-center border-b border-[#E5E7EB] bg-[#F9FAFB]">
         <button
@@ -70,7 +70,7 @@ export function MarkdownEditor({
               onClick={ai.handleImprove}
               disabled={ai.isEmpty || ai.state === 'loading' || ai.state === 'diff'}
               title={ai.isEmpty ? 'Write some text first' : 'Improve text with AI'}
-              className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-md text-[#9CA3AF] hover:text-[#7C3AED] hover:bg-[#F5F3FF] disabled:opacity-40 disabled:hover:text-[#9CA3AF] disabled:hover:bg-transparent transition-colors"
+              className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-md text-[#9CA3AF] hover:text-[#3B82F6] hover:bg-[#EFF6FF] disabled:opacity-40 disabled:hover:text-[#9CA3AF] disabled:hover:bg-transparent transition-colors"
             >
               {ai.state === 'loading' ? (
                 <svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">

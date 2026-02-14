@@ -22,7 +22,7 @@ export function EntryBadge({ entryType, feedbackType }: EntryBadgeProps) {
       case 'notes':
         return { label: 'Note', color: 'bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]' };
       case 'career_conversation':
-        return { label: 'Career', color: 'bg-[#F5F3FF] text-[#7C3AED] border border-[#DDD6FE]' };
+        return { label: 'Career', color: 'bg-[#EFF6FF] text-[#3B82F6] border border-[#BFDBFE]' };
       case 'third_party_feedback':
         return { label: '3rd Party', color: 'bg-[#FFF7ED] text-[#EA580C] border border-[#FDBA74]' };
       default:

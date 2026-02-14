@@ -82,7 +82,7 @@ export function InlineDiff({
         <button
           type="button"
           onClick={onAccept}
-          className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md bg-[#111827] text-white hover:bg-[#1F2937] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md bg-[#3B82F6] text-white hover:bg-[#2563EB] transition-colors"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />

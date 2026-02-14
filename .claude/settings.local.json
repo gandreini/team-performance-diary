@@ -25,7 +25,13 @@
       "Bash(curl:*)",
       "Bash(python3:*)",
       "Bash(gh api:*)",
-      "Bash(git -C /Users/giulioandreini/Desktop/Lavoro/team-performance-diary branch --show-current)"
+      "Bash(git -C /Users/giulioandreini/Desktop/Lavoro/team-performance-diary branch --show-current)",
+      "Bash(ls:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx kill-port:*)"
     ]
   }
 }

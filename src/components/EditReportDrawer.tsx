@@ -164,8 +164,8 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
                   id="firstName"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors ${
-                    errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors ${
+                    errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
                   }`}
                 />
                 {errors.firstName && (
@@ -182,8 +182,8 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
                   id="lastName"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors ${
-                    errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors ${
+                    errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
                   }`}
                 />
                 {errors.lastName && (
@@ -201,8 +201,8 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
                   id="developmentGoals"
                   value={developmentGoals}
                   onChange={(e) => setDevelopmentGoals(e.target.value)}
-                  className={`w-full flex-1 min-h-[150px] px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#DDD6FE] transition-colors resize-none ${
-                    errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#8B5CF6]'
+                  className={`w-full flex-1 min-h-[150px] px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors resize-none ${
+                    errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
                   }`}
                   placeholder="Markdown supported"
                 />
