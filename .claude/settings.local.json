@@ -31,7 +31,12 @@
       "Bash(lsof:*)",
       "Bash(xargs kill:*)",
       "Bash(npm run dev:*)",
-      "Bash(npx kill-port:*)"
+      "Bash(npx kill-port:*)",
+      "mcp__plugin_compound-engineering_context7__resolve-library-id",
+      "mcp__context7__resolve-library-id",
+      "mcp__plugin_compound-engineering_context7__query-docs",
+      "mcp__context7__query-docs",
+      "Bash(npm run db:seed:*)"
     ]
   }
 }

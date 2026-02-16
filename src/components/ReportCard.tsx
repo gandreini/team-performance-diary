@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { User } from 'lucide-react';
 import type { Report } from '@/db';
 
 interface ReportCardProps {
@@ -21,19 +22,7 @@ export function ReportCard({ report }: ReportCardProps) {
       <div className="flex flex-col items-center text-center">
         {/* User Avatar */}
         <div className="w-14 h-14 rounded-full bg-[#F3F4F6] flex items-center justify-center mb-3 group-hover:bg-[#E5E7EB] transition-colors">
-          <svg
-            className="w-7 h-7 text-[#6B7280]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
+          <User className="w-7 h-7 text-[#6B7280]" strokeWidth={1.5} />
         </div>
 
         {/* Name */}

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { Button } from '@/components/Button';
 import { EntryCard } from '@/components/EntryCard';
+import { ChevronLeft } from 'lucide-react';
 import type { Report, Entry, Cycle, ArchivedGoal, EntryType, ArchivedGoalSnapshot } from '@/db';
 
 const ENTRY_TYPE_OPTIONS: { value: EntryType | 'all'; label: string }[] = [
@@ -121,9 +122,7 @@ export default function ArchivedCyclePage({ params }: { params: Promise<{ id: st
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
         <Link href="/settings">
           <Button variant="ghost" size="sm">
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="w-4 h-4 mr-1" />
             Back
           </Button>
         </Link>

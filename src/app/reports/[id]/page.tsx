@@ -12,6 +12,7 @@ import { ScrollArea } from "@/components/ScrollArea";
 import { GoalsList } from "@/components/GoalsList";
 import { ReportSummary } from "@/components/ReportSummary";
 import { useToast } from "@/components/Toast";
+import { ChevronDown, FileText } from "lucide-react";
 import type { Report, Entry, Cycle, EntryType, DevelopmentGoal } from "@/db";
 
 const ENTRY_TYPES: { value: EntryType; label: string }[] = [
@@ -173,21 +174,11 @@ export default function ReportDiaryPage({
                                 <h2 className="text-md font-semibold text-[#111827] tracking-tight">
                                     Development Goals
                                 </h2>
-                                <svg
+                                <ChevronDown
                                     className={`w-4 h-4 text-[#6B7280] transition-transform duration-200 ${
                                         isGoalsExpanded ? "rotate-180" : ""
                                     }`}
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M19 9l-7 7-7-7"
-                                    />
-                                </svg>
+                                />
                             </button>
                             {isGoalsExpanded && (
                                 <ScrollArea
@@ -239,19 +230,7 @@ export default function ReportDiaryPage({
                             trigger={
                                 <Button>
                                     Add Entry
-                                    <svg
-                                        className="w-4 h-4 ml-1.5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M19 9l-7 7-7-7"
-                                        />
-                                    </svg>
+                                    <ChevronDown className="w-4 h-4 ml-1.5" />
                                 </Button>
                             }
                             options={ENTRY_TYPES}
@@ -264,19 +243,7 @@ export default function ReportDiaryPage({
 
                     {filteredEntries.length === 0 ? (
                         <div className="text-center py-12 bg-white rounded-md border border-[#E5E7EB]">
-                            <svg
-                                className="mx-auto h-10 w-10 text-[#D1D5DB]"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={1.5}
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                />
-                            </svg>
+                            <FileText className="mx-auto h-10 w-10 text-[#D1D5DB]" strokeWidth={1.5} />
                             <h3 className="mt-4 text-sm font-medium text-[#111827]">
                                 {filter === "all"
                                     ? "No entries yet"
@@ -292,19 +259,7 @@ export default function ReportDiaryPage({
                                     trigger={
                                         <Button>
                                             Add Entry
-                                            <svg
-                                                className="w-4 h-4 ml-1.5"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M19 9l-7 7-7-7"
-                                                />
-                                            </svg>
+                                            <ChevronDown className="w-4 h-4 ml-1.5" />
                                         </Button>
                                     }
                                     options={ENTRY_TYPES}

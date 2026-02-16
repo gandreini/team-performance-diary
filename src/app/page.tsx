@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/Button';
 import { ReportCard } from '@/components/ReportCard';
 import { AddReportModal } from '@/components/AddReportModal';
+import { Users } from 'lucide-react';
 import type { Report, Cycle } from '@/db';
 
 interface ReportWithCount extends Report {
@@ -76,19 +77,7 @@ export default function Home() {
 
       {reports.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-md border border-[#E5E7EB]">
-          <svg
-            className="mx-auto h-10 w-10 text-[#D1D5DB]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
+          <Users className="mx-auto h-10 w-10 text-[#D1D5DB]" strokeWidth={1.5} />
           <h3 className="mt-4 text-sm font-medium text-[#111827]">No reports yet</h3>
           <p className="mt-1 text-sm text-[#6B7280]">
             Add your first report to get started.

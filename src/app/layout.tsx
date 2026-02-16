@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Team Performance Diary",
+  title: "tipi",
   description: "Track performance information about your direct reports throughout review cycles",
 };
 

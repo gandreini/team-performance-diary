@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { Check, X } from 'lucide-react';
 
 type ToastType = 'success' | 'error';
 
@@ -55,22 +56,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             }`}
           >
             {toast.type === 'success' ? (
-              <svg className="w-4 h-4 text-[#16A34A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+              <Check className="w-4 h-4 text-[#16A34A]" />
             ) : (
-              <svg className="w-4 h-4 text-[#DC2626]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-4 h-4 text-[#DC2626]" />
             )}
             <span>{toast.message}</span>
             <button
               onClick={() => removeToast(toast.id)}
               className="ml-auto text-[#9CA3AF] hover:text-[#4B5563] transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-4 h-4" />
             </button>
           </div>
         ))}

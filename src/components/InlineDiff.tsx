@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { diffWords } from 'diff';
+import { Check, X } from 'lucide-react';
 
 interface InlineDiffProps {
   originalText: string;
@@ -84,9 +85,7 @@ export function InlineDiff({
           onClick={onAccept}
           className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md bg-[#3B82F6] text-white hover:bg-[#2563EB] transition-colors"
         >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-          </svg>
+          <Check className="w-3.5 h-3.5" strokeWidth={2.5} />
           Accept
         </button>
         <button
@@ -94,9 +93,7 @@ export function InlineDiff({
           onClick={onReject}
           className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] transition-colors"
         >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X className="w-3.5 h-3.5" strokeWidth={2.5} />
           Reject
         </button>
       </div>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { useToast } from '@/components/Toast';
+import { ChevronRight, Download, Upload } from 'lucide-react';
 import type { Cycle } from '@/db';
 
 export default function SettingsPage() {
@@ -257,19 +258,7 @@ export default function SettingsPage() {
                       {formatDate(cycle.startDate)} – {cycle.endDate ? formatDate(cycle.endDate) : 'Present'}
                     </p>
                   </div>
-                  <svg
-                    className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#6B7280] transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  <ChevronRight className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#6B7280] transition-colors" />
                 </div>
               </Link>
             ))}
@@ -286,9 +275,7 @@ export default function SettingsPage() {
 
         <div className="flex flex-wrap gap-3">
           <Button onClick={handleDownloadBackup}>
-            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
+            <Download className="w-4 h-4 mr-1.5" />
             Download Backup
           </Button>
 
@@ -300,9 +287,7 @@ export default function SettingsPage() {
             className="hidden"
           />
           <Button variant="secondary" onClick={() => fileInputRef.current?.click()}>
-            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-            </svg>
+            <Upload className="w-4 h-4 mr-1.5" />
             Restore from Backup
           </Button>
         </div>
