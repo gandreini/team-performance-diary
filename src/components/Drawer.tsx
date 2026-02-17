@@ -9,23 +9,24 @@ interface DrawerProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  footer?: React.ReactNode;
   width?: 'md' | 'lg' | 'xl' | '2xl';
 }
 
-export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: DrawerProps) {
+export function Drawer({ isOpen, onClose, title, children, footer, width = 'lg' }: DrawerProps) {
   const [shouldRender, setShouldRender] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
+      document.body.style.overflow = 'hidden';
       // Small delay to ensure the element is in the DOM before animating
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           setIsAnimating(true);
         });
       });
-      document.body.style.overflow = 'hidden';
     } else {
       setIsAnimating(false);
       document.body.style.overflow = 'unset';
@@ -65,18 +66,10 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
   };
 
   const drawerContent = (
-    <div className="fixed inset-0 z-[9999]">
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 bg-[#111827]/40 backdrop-blur-[2px] transition-opacity duration-300 ease-out ${
-          isAnimating ? 'opacity-100' : 'opacity-0'
-        }`}
-        onClick={onClose}
-      />
-
+    <div className="fixed inset-y-0 right-0 z-[9999] pointer-events-none">
       {/* Drawer panel */}
       <div
-        className={`fixed inset-y-0 right-0 w-full ${widthClasses[width]} bg-white shadow-e4 flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed inset-y-0 right-0 w-full ${widthClasses[width]} bg-white shadow-e4 flex flex-col transition-transform duration-300 ease-out pointer-events-auto ${
           isAnimating ? 'translate-x-0' : 'translate-x-full'
         }`}
         onTransitionEnd={handleTransitionEnd}
@@ -93,9 +86,16 @@ export function Drawer({ isOpen, onClose, title, children, width = 'lg' }: Drawe
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col min-h-0">
+        <div className="flex-1 overflow-y-auto px-6 pt-4 pb-6 flex flex-col min-h-0">
           {children}
         </div>
+
+        {/* Sticky footer */}
+        {footer && (
+          <div className="px-6 py-4 border-t border-[#F3F4F6] flex-shrink-0 bg-white">
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   );

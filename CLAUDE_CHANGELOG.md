@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-02-17
+
+### Fixed
+- Feedback form overlap: "Link to Development Goals" no longer overlaps "Additional notes" on narrow screens
+- Double scrollbar: re-added body scroll lock when drawer is open to prevent two scrollbars
+
+### Changed
+- Drawer: added `footer` prop for sticky bottom content (buttons stay visible while form scrolls)
+- Drawer: re-added `document.body.style.overflow = 'hidden'` when open (left column goals still scrollable via internal ScrollArea)
+- AddEntryDrawer: Cancel/Save buttons moved to sticky drawer footer via `form="entry-form"` attribute
+- EditReportDrawer: Delete/Cancel/Save buttons moved to sticky drawer footer via `form="report-form"` attribute
+- AddEntryDrawer: added bottom padding to goal linking section for spacing above sticky footer
+- AddEntryDrawer: `flex-1 min-h-0` now conditionally applied — only on non-feedback forms so feedback content scrolls naturally
+
+### Files Modified
+- `src/components/Drawer.tsx` - Added `footer` prop, re-added body scroll lock
+- `src/components/AddEntryDrawer.tsx` - Moved buttons to footer, conditional flex-1 layout
+- `src/components/EditReportDrawer.tsx` - Moved buttons to footer
+
 ## 2026-02-14
 
 ### Fixed (Code Review)

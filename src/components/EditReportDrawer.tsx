@@ -151,74 +151,13 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
 
   return (
     <>
-      <Drawer isOpen={isOpen} onClose={handleClose} title="Edit Report" width="xl">
-        <form onSubmit={handleSubmit} className="flex flex-col h-full">
-          <div className="flex flex-col flex-1 min-h-0">
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-[#374151] mb-1.5">
-                  First name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors ${
-                    errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
-                  }`}
-                />
-                {errors.firstName && (
-                  <p className="mt-1 text-xs text-[#DC2626]">{errors.firstName}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-[#374151] mb-1.5">
-                  Last name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors ${
-                    errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
-                  }`}
-                />
-                {errors.lastName && (
-                  <p className="mt-1 text-xs text-[#DC2626]">{errors.lastName}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="flex-1 flex flex-col min-h-0 mt-4">
-              <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#374151] mb-1.5">
-                Development goals (optional)
-              </label>
-              <AiTextImprove value={developmentGoals} onChange={setDevelopmentGoals} context="development goals" maxLength={5000}>
-                <textarea
-                  id="developmentGoals"
-                  value={developmentGoals}
-                  onChange={(e) => setDevelopmentGoals(e.target.value)}
-                  className={`w-full flex-1 min-h-[150px] px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors resize-none ${
-                    errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
-                  }`}
-                  placeholder="Markdown supported"
-                />
-              </AiTextImprove>
-              <div className="flex justify-between mt-1">
-                {errors.developmentGoals && (
-                  <p className="text-xs text-[#DC2626]">{errors.developmentGoals}</p>
-                )}
-                <p className={`text-xs ml-auto ${developmentGoals.length > 5000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
-                  {developmentGoals.length} / 5000
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center pt-4 mt-6 border-t border-[#F3F4F6]">
+      <Drawer
+        isOpen={isOpen}
+        onClose={handleClose}
+        title="Edit Report"
+        width="xl"
+        footer={
+          <div className="flex justify-between items-center">
             <Button
               type="button"
               variant="danger"
@@ -230,9 +169,74 @@ export function EditReportDrawer({ isOpen, onClose, onSuccess, onDelete, report 
               <Button type="button" variant="secondary" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button type="submit" loading={loading} disabled={!isValid}>
+              <Button type="submit" form="report-form" loading={loading} disabled={!isValid}>
                 Save
               </Button>
+            </div>
+          </div>
+        }
+      >
+        <form id="report-form" onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-[#374151] mb-1.5">
+                First name
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors ${
+                  errors.firstName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
+                }`}
+              />
+              {errors.firstName && (
+                <p className="mt-1 text-xs text-[#DC2626]">{errors.firstName}</p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-[#374151] mb-1.5">
+                Last name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors ${
+                  errors.lastName ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
+                }`}
+              />
+              {errors.lastName && (
+                <p className="mt-1 text-xs text-[#DC2626]">{errors.lastName}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 flex flex-col min-h-0 mt-4">
+            <label htmlFor="developmentGoals" className="block text-sm font-medium text-[#374151] mb-1.5">
+              Development goals (optional)
+            </label>
+            <AiTextImprove value={developmentGoals} onChange={setDevelopmentGoals} context="development goals" maxLength={5000}>
+              <textarea
+                id="developmentGoals"
+                value={developmentGoals}
+                onChange={(e) => setDevelopmentGoals(e.target.value)}
+                className={`w-full flex-1 min-h-[150px] px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#BFDBFE] transition-colors resize-none ${
+                  errors.developmentGoals ? 'border-[#DC2626] focus:border-[#DC2626]' : 'border-[#E5E7EB] focus:border-[#3B82F6]'
+                }`}
+                placeholder="Markdown supported"
+              />
+            </AiTextImprove>
+            <div className="flex justify-between mt-1">
+              {errors.developmentGoals && (
+                <p className="text-xs text-[#DC2626]">{errors.developmentGoals}</p>
+              )}
+              <p className={`text-xs ml-auto ${developmentGoals.length > 5000 ? 'text-[#DC2626]' : 'text-[#6B7280]'}`}>
+                {developmentGoals.length} / 5000
+              </p>
             </div>
           </div>
         </form>

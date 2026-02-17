@@ -322,7 +322,7 @@ export function AddEntryDrawer({
   );
 
   const renderKudosForm = () => (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 flex-1 min-h-0">
       <div className="flex-shrink-0">
         <label htmlFor="link" className="block text-sm font-medium text-[#374151] mb-1.5">
           Link to kudos (optional)
@@ -340,7 +340,7 @@ export function AddEntryDrawer({
         )}
       </div>
 
-      <div>
+      <div className="flex flex-col flex-1 min-h-0">
         <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Describe the kudos
         </label>
@@ -350,13 +350,14 @@ export function AddEntryDrawer({
           maxLength={5000}
           rows={8}
           aiContext="kudos description"
+          fillHeight
         />
       </div>
     </div>
   );
 
   const renderThirdPartyFeedbackForm = () => (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 flex-1 min-h-0">
       <div className="flex-shrink-0">
         <label htmlFor="providerName" className="block text-sm font-medium text-[#374151] mb-1.5">
           Who provided this feedback?
@@ -373,7 +374,7 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div>
+      <div className="flex flex-col flex-1 min-h-0">
         <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           Feedback content
         </label>
@@ -383,13 +384,14 @@ export function AddEntryDrawer({
           maxLength={5000}
           rows={8}
           aiContext="third-party feedback content"
+          fillHeight
         />
       </div>
     </div>
   );
 
   const renderSimpleForm = (label: string, context: string) => (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1 min-h-0">
       <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
         {label}
       </label>
@@ -399,12 +401,13 @@ export function AddEntryDrawer({
         maxLength={5000}
         rows={8}
         aiContext={context}
+        fillHeight
       />
     </div>
   );
 
   const renderAccomplishmentForm = () => (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 flex-1 min-h-0">
       <div className="flex-shrink-0">
         <label htmlFor="title" className="block text-sm font-medium text-[#374151] mb-1.5">
           Title (optional)
@@ -422,7 +425,7 @@ export function AddEntryDrawer({
         </p>
       </div>
 
-      <div>
+      <div className="flex flex-col flex-1 min-h-0">
         <label className="block text-sm font-medium text-[#374151] mb-1.5 flex-shrink-0">
           What did they accomplish?
         </label>
@@ -432,6 +435,7 @@ export function AddEntryDrawer({
           maxLength={5000}
           rows={8}
           aiContext="accomplishment description"
+          fillHeight
         />
       </div>
     </div>
@@ -457,14 +461,29 @@ export function AddEntryDrawer({
   };
 
   return (
-    <Drawer isOpen={isOpen} onClose={handleClose} title={getTitle()} width="xl">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-        <div>
+    <Drawer
+      isOpen={isOpen}
+      onClose={handleClose}
+      title={getTitle()}
+      width="xl"
+      footer={
+        <div className="flex justify-end gap-2">
+          <Button type="button" variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button type="submit" form="entry-form" loading={loading} disabled={!isFormValid()}>
+            Save
+          </Button>
+        </div>
+      }
+    >
+      <form id="entry-form" onSubmit={handleSubmit} className="flex flex-col gap-0 flex-1 min-h-0">
+        <div className={entryType === 'feedback' ? '' : 'flex-1 flex flex-col min-h-0'}>
           {renderForm()}
         </div>
 
         {/* Goal Linking */}
-        <div className="pt-5 mt-5 border-t border-[#F3F4F6] flex-shrink-0">
+        <div className="pt-5 mt-5 pb-4 border-t border-[#F3F4F6]">
           <label className="block text-sm font-medium text-[#374151] mb-2">
             Link to Development Goals
           </label>
@@ -473,15 +492,6 @@ export function AddEntryDrawer({
             selectedGoalIds={linkedGoalIds}
             onChange={(goalIds) => { setLinkedGoalIds(goalIds); setHasChanges(true); }}
           />
-        </div>
-
-        <div className="flex justify-end gap-2 pt-6 mt-6 border-t border-[#F3F4F6] flex-shrink-0">
-          <Button type="button" variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button type="submit" loading={loading} disabled={!isFormValid()}>
-            Save
-          </Button>
         </div>
       </form>
     </Drawer>
